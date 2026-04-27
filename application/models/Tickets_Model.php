@@ -1,10 +1,7 @@
 <?php
 
-
 class Tickets_Model extends CI_Model
 {
-
-
     //get departments in the database
     public function getDprtmnts()
     {
@@ -31,13 +28,7 @@ class Tickets_Model extends CI_Model
         $this->db->insert('tickets', $data);
         $ticket_id = $this->db->insert_id();
 
-
-        $ticket_code = 'TCK-' . str_pad($ticket_id, 4, '0', STR_PAD_LEFT);
-
-
-        $this->db->where('id', $ticket_id);
-        $this->db->update('tickets', ['ticket_code' => $ticket_code]);
-
+        // no more ticket_code insert needed
 
         foreach ($filename as $file) {
             $attachment = [
@@ -52,11 +43,36 @@ class Tickets_Model extends CI_Model
 
         $this->db->trans_complete();
 
-        // 5. Return result
         if ($this->db->trans_status() === FALSE) {
             return ['status' => FALSE, 'message' => 'Upload Failed!'];
         } else {
+            $ticket_code = 'TCK-' . str_pad($ticket_id, 5, '0', STR_PAD_LEFT);
             return ['status' => TRUE, 'message' => 'Ticket created! Code: ' . $ticket_code];
         }
+    }
+
+
+    public function getTickets()
+    {
+        $this->db->select("
+        CONCAT('TCK-', LPAD(tickets.id, 5, '0')) AS ticket_code,
+        tickets.title,
+        tickets.priority,
+        tickets.status,
+        tickets.created_at,
+        tickets.updated_at,
+        CONCAT(author_details.firstname, ' ', author_details.lastname) AS author_fullname,
+        CONCAT(pic_details.firstname, ' ', pic_details.lastname) AS pic_fullname
+    ", FALSE);
+
+        $this->db->from('tickets');
+
+        $this->db->join('account AS author_account', 'tickets.author_id = author_account.id', 'left');
+        $this->db->join('employee_details AS author_details', 'author_account.emp_id = author_details.id', 'left');
+        $this->db->join('account AS pic_account', 'tickets.assignee_id = pic_account.id', 'left');
+        $this->db->join('employee_details AS pic_details', 'pic_account.emp_id = pic_details.id', 'left');
+
+        $query = $this->db->get();
+        return $query->result_array();
     }
 }

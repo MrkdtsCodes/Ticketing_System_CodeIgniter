@@ -66,12 +66,13 @@ class Tickets extends CI_Controller
 
             if ($result['status'] === TRUE) {
 
-                redirect('send');
+                redirect('send'); //mapupunta sa send tickets parin
             } else {
                 show_error($result['message']);
             }
         } else {
             $data['departments'] = $this->Tickets_Model->getDprtmnts();
+            $this->load->view('pages/navbar');
             $this->load->view('pages/create_tickets', $data);
         }
     }

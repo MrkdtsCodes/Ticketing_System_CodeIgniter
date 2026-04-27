@@ -26,3 +26,6 @@ $route['send'] = 'Tickets/CrtTickets';
 
 //Logout current session
 $route['Logout'] = 'AuthProcess/Logout';
+
+//dashboard
+$route['dashboard'] = 'Pages/displayDshbrd';

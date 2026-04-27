@@ -19,28 +19,47 @@ class Pages extends CI_Controller
         $this->load->view('pages/login_page');
     }
 
+    //create account page
     public function displayCreateAcc()
     {
         $data['roles'] = $this->Auth_Model->getRoles();
         $this->load->view('pages/create_account', $data);
     }
 
+    //create ticket page
+    public function displayCreateTickets()
+    {
+        if ($this->session->userdata('is_loggedin')) {
+            $data['departments'] = $this->Tickets_Model->getDprtmnts();
+            $this->load->view('pages/navbar');
+            $this->load->view('pages/create_tickets', $data);
+        } else {
+            $this->session->set_flashdata('error', "You must be logged in to access Different page.");
+            redirect('login');
+        }
+    }
+
+    //dashboard
+    public function displayDshbrd()
+    {
+        if (!$this->session->userdata('is_loggedin')) {
+            redirect('login');
+        }
+
+        $data['tickets'] = $this->Tickets_Model->getTickets();
+        $this->load->view('pages/navbar');
+        $this->load->view('pages/dashboard', $data);
+    }
+
+
+    //navigation bar
     public function displayNav()
     {
         $this->load->view('pages/navbar');
     }
 
-    public function displayCreateTickets()
-    {
-        if ($this->session->userdata('is_loggedin')) {
-            $data['departments'] = $this->Tickets_Model->getDprtmnts();
-            $this->load->view('pages/create_tickets', $data);
-        } else {
-            $this->session->set_flashdata('error', "You must be logged in to access this page.");
-            redirect('login');
-        }
-    }
 
+    //department dropdown values
     public function dsplyDept()
     {
         $data['departments'] = $this->Tickets_Model->getDprtmnts();

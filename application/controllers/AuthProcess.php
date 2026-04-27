@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @property form_validation $form_validation
  * @property Auth_Model $Auth_Model

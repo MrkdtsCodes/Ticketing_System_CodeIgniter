@@ -13,99 +13,130 @@
 </head>
 
 <body>
-    <div class="">
+    <nav class="bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200 shadow-sm">
+        <div class="max-w-screen-2xl mx-auto flex flex-wrap items-center justify-between p-4">
 
+            <div class="flex items-center gap-8">
+                <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo">
+                    <span class="self-center text-xl font-bold whitespace-nowrap text-gray-800">Flowbite</span>
 
-        <nav class="bg-neutral-primary fixed w-full z-20 top-0 start-0 border-b border-default">
-
-            <div class="max-w-screen-xxl flex flex-wrap justify-between p-4 border border-red-500">
-                <div class="flex flex-row ">
-                    <div class="border border-blue-700 flex items-center">
-                        <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                            <img src="https://flowbite.com/docs/images/logo.svg" class="h-7" alt="Flowbite Logo">
-                            <span
-                                class="self-center text-xl text-heading font-semibold whitespace-nowrap">Flowbite</span>
-                        </a>
-                    </div>
-                    <div class="items-center justify-between hidden w-full md:flex md:w-auto" id="navbar-sticky">
+                    <div class="hidden w-full md:block md:w-auto" id="navbar-sticky">
                         <ul
-                            class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-default rounded-base bg-neutral-secondary-soft md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-neutral-primary">
+                            class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
                             <li>
                                 <a href="#"
-                                    class="block py-2 px-3 text-white bg-brand rounded-sm md:bg-transparent md:text-fg-brand md:p-0"
+                                    class="block py-2 px-3 text-white bg-blue-600 rounded md:bg-transparent md:text-blue-600 md:p-0"
                                     aria-current="page">Home</a>
                             </li>
                             <li>
                                 <a href="#"
-                                    class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Dashboard</a>
+                                    class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 transition-colors">Dashboard</a>
                             </li>
                             <li>
                                 <a href="#"
-                                    class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Tickets</a>
+                                    class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 transition-colors">Tickets</a>
                             </li>
                             <li>
                                 <a href="#"
-                                    class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Reports</a>
+                                    class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 transition-colors">Reports</a>
                             </li>
                         </ul>
                     </div>
-                </div>
-
-                <div class="max-w-screen-xxl flex items-center justify-evenly border border-red-500">
-                    <div class="flex  space-x-3 md:space-x-0 rtl:space-x-reverse">
-                        <button type="button"
-                            class=" flex flex-row  contents-center justify-center justify-between  text-white bg-blue-500 hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-[100px] text-sm px-3 py-2 focus:outline-none">
-                            <svg class="lucide lucide-ticket-plus rotate-12" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="lucide lucide-ticket-plus-icon lucide-ticket-plus">
-                                <path
-                                    d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
-                                <path d="M9 12h6" />
-                                <path d="M12 9v6" />
-                            </svg> Create Tickets</button>
-                        <button data-collapse-toggle="navbar-sticky" type="button"
-                            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary"
-                            aria-controls="navbar-sticky" aria-expanded="false">
-                            <span class="sr-only">Open main menu</span>
-                            <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                    d="M5 7h14M5 12h14M5 17h14" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-bell-icon lucide-bell">
-                            <path d="M10.268 21a2 2 0 0 0 3.464 0" />
-                            <path
-                                d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
-                        </svg>
-                    </div>
-
-                    <div class="flex items-center justify-between">
-                        <div class="items-center mx-2">
-                            Mark Andrie Datus
-                        </div>
-                        <div class="items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-user-icon lucide-user">
-                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                                <circle cx="12" cy="7" r="4" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </nav>
 
-    </div>
+            <div class="flex items-center gap-4 md:gap-6">
+
+                <a href="<?php echo base_url('create/tickets') ?>">
+                    <button type="button"
+                        class="hidden md:flex items-center gap-2 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 focus:outline-none transition-colors">
+                        <svg class="rotate-12 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path
+                                d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+                            <path d="M9 12h6" />
+                            <path d="M12 9v6" />
+                        </svg>
+                        Create Ticket
+                    </button>
+                </a>
+
+                <button class="relative text-gray-500 hover:text-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+                        <path
+                            d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+                    </svg>
+                    <span
+                        class="absolute top-0 right-0 inline-flex items-center justify-center w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                </button>
+
+                <div id="profile_dropdown" class=" flex items-center gap-3 cursor-pointer">
+                    <span class="hidden md:block text-sm font-medium text-gray-700"> <?php if ($this->session->userdata('user_id')) {
+                                                                                            echo  "<div class=''>" . strtoupper($this->session->userdata('firstname')) . " " . strtoupper($this->session->userdata('lastname')) . "</div>";
+                                                                                        } ?></span>
+                    <div class=" w-9 h-9 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 border
+                        border-gray-300 relative">
+                        <div class="" ">
+                            <svg xmlns=" http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        </div>
+
+                        <div class=" hidden absolute top-12 right-3 rounded-lg bg-white z-1 border border-black w-3xs"
+                            id="dropdown_menu">
+                            <ul class="">
+                                <a href="<?php echo base_url('Logout') ?>">
+                                    <li class="py-2 px-14 hover:bg-blue-700 hover:text-white" ">
+                                        log out
+                                    </li>
+                                </a>
+
+                                <a href=" <?php echo base_url('Logout ') ?>">
+                                    <li class="py-2 px-14 hover:bg-blue-700 hover:text-white" ">
+                                        settings
+                                    </li>
+                                </a>
+
+
+
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+
+                <button data-collapse-toggle=" navbar-sticky" type="button"
+                                        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                                        aria-controls="navbar-sticky" aria-expanded="false">
+                                        <span class="sr-only">Open main menu</span>
+                                        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4 6h16M4 12h16M4 18h16" />
+                                        </svg>
+                                        </button>
+                        </div>
+                    </div>
+    </nav>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.3.0/dist/flowbite.min.js"></script>
+    <script>
+        const profile_dropdown = document.getElementById('profile_dropdown');
+        const dropdown_menu = document.getElementById('dropdown_menu');
+
+        profile_dropdown.addEventListener('click', () => {
+
+            dropdown_menu.classList.toggle('hidden');
+
+
+        });
+    </script>
 </body>
 
 
