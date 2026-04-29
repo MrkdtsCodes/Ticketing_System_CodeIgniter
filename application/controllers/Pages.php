@@ -46,7 +46,7 @@ class Pages extends CI_Controller
             redirect('login');
         }
 
-        $data['tickets'] = $this->Tickets_Model->getTickets();
+        $data['crtdTickets'] = $this->Tickets_Model->getTickets();
         $this->load->view('pages/navbar');
         $this->load->view('pages/dashboard', $data);
     }

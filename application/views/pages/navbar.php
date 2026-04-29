@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <?php $tickets = isset($tickets) ? $tickets : []; ?>
     <nav class="bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200 shadow-sm">
         <div class="max-w-screen-2xl mx-auto flex flex-wrap items-center justify-between p-4">
 

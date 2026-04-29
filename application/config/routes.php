@@ -22,7 +22,7 @@ $route['navbar'] = 'Pages/displayNav';
 $route['create/tickets'] = 'Pages/displayCreateTickets';
 
 //create tickets
-$route['send'] = 'Tickets/CrtTickets';
+$route['tickets/send'] = 'Tickets/CrtTickets';
 
 //Logout current session
 $route['Logout'] = 'AuthProcess/Logout';

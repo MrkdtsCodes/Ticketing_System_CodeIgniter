@@ -23,6 +23,18 @@
     <!-- Your CSS -->
     <link rel="stylesheet" href="<?php echo base_url('assets/CSS/DataTables.css') ?>">
 
+    <!-- DataTables Buttons (EXPORT) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <!-- Excel + PDF support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
     <style>
         body {
             font-family: 'DM Sans', sans-serif;
@@ -30,13 +42,44 @@
     </style>
 </head>
 
-<body class="bg-slate-50">
+<body class="bg-slate-50 p-5">
 
-    <main class="pt-20 px-6 min-h-screen">
+    <main class="pt-20 px-4 min-h-screen">
         <div class="p-8  mx-auto bg-white rounded-2xl shadow-sm border border-slate-200">
 
 
-            <div class="dt-search-wrapper mb-2 flex items-center bg-white rounded-lg"></div>
+            <div class="dt-search-wrapper mb-2 flex gap-3 items-center bg-white rounded-lg">
+
+                <div class="order-1 text-white bg-blue-500 p-3 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-funnel-icon lucide-funnel">
+                        <path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z" />
+                    </svg>
+                </div>
+
+                <div class="order-1 ">
+                    <button id="exportExcelBtn" class="p-3 text-white rounded-lg bg-green-400 flex flex-row px-3 gap-2 items-center justify-center">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down-icon lucide-file-down">
+                                <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                                <path d="M12 18v-6" />
+                                <path d="m9 15 3 3 3-3" />
+                            </svg></span>
+                        Export as Excel
+                    </button>
+                </div>
+
+                <div class="order-1 ">
+                    <button id="exportPdfBtn" class="p-3 text-white rounded-lg bg-red-400 flex flex-row px-3 gap-2 items-center justify-center">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down-icon lucide-file-down">
+                                <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                                <path d="M12 18v-6" />
+                                <path d="m9 15 3 3 3-3" />
+                            </svg></span>
+                        Export as PDF
+                    </button>
+                </div>
+            </div>
 
 
 
@@ -74,8 +117,11 @@
                     </tr>
                 </thead>
 
+
+
                 <tbody>
-                    <?php foreach ($tickets as $ticket): ?>
+                    <?php foreach ($crtdTickets as $ticket): ?>
+
                         <tr class="bg-white hover:bg-slate-50 transition border border-slate-100 rounded-lg">
                             <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['ticket_code'] ?></td>
                             <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['title'] ?></td>
@@ -110,7 +156,13 @@
                             </td>
 
                             <td class="px-4 py-3">
-                                <div
+                                <div style="color:<?php
+                                                    $p = strtolower(trim($ticket['status']));
+                                                    if ($p === 'open') echo '#4ade80';
+                                                    elseif ($p === 'in progress') echo '#3d76fb';
+                                                    elseif ($p === 'for approval') echo '#94a3b8';
+                                                    else echo 'red';
+                                                    ?>;"
                                     class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-medium text-slate-700">
                                     <span class="" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;
                                      background-color: <?php
@@ -150,33 +202,54 @@
 
 
     <script>
-        $(document).ready(function() {
-            $('#myTable').DataTable({
-                order: [
-                    [0, 'asc']
-                ],
-                responsive: false,
-                stateSave: true,
-                pageLength: 5,
-                pagingType: "simple_numbers",
-                language: {
-                    search: "",
-                    searchPlaceholder: "Search tickets..."
-                },
-                layout: {
-                    topStart: null,
-                    topEnd: 'search',
-                    bottomStart: 'info',
-                    bottomEnd: 'paging'
-                },
+        const table = $('#myTable').DataTable({
+            order: [
+                [0, 'asc']
+            ],
+            responsive: false,
+            stateSave: true,
 
-            });
 
-            // Move search input into custom wrapper
-            $('.dt-search-wrapper').append($('.dt-search input'));
+            dom: 'f t<"bottom"l p i>',
+
+            pageLength: 5,
+            pagingType: "simple_numbers",
+            language: {
+                search: "",
+                searchPlaceholder: "Search tickets..."
+            },
+
+
+            buttons: [{
+                    extend: 'excel',
+                    title: 'Tickets Report',
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    title: 'Tickets Report',
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    }
+                }
+            ],
+        });
+
+        // Move search input into custom wrapper
+        $('.dt-search-wrapper').append($('.dt-search input'));
+        
+        //export buttons
+        $('#exportExcelBtn').on('click', function() {
+            table.button('.buttons-excel').trigger();
+        });
+
+        $('#exportPdfBtn').on('click', function() {
+            table.button('.buttons-pdf').trigger();
         });
     </script>
-    <script src="<?php echo base_url('assets/JavaScript/Color_code.js') ?>"></script>
+
 
 </body>
 

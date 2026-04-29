@@ -12,6 +12,7 @@ class Tickets_Model extends CI_Model
     //insert Created ticket
     public function insrtCrtdTicket($filename)
     {
+        
         $author_id = $this->session->userdata('user_id');
 
         $this->db->trans_start();
@@ -24,33 +25,43 @@ class Tickets_Model extends CI_Model
             'priority'      => $this->input->post('priority'),
             'status'        => 'For Approval',
         ];
+        
 
-        $this->db->insert('tickets', $data);
+        
+       $insert = $this->db->insert('tickets', $data);
+        
         $ticket_id = $this->db->insert_id();
 
         // no more ticket_code insert needed
 
-        foreach ($filename as $file) {
-            $attachment = [
-                'ticket_id'   => $ticket_id,
-                'file_name'   => $file['origName'],
-                'file_path'   => 'assets/images/ticket_attachments/' . $file['encryptedName'],
-                'file_type'   => pathinfo($file['origName'], PATHINFO_EXTENSION),
-                'uploaded_at' => date('Y-m-d H:i:s')
-            ];
-            $this->db->insert('ticket_attachments', $attachment);
+        if (!empty($filename)) {
+            foreach ($filename as $file) {
+                $attachment = [
+                    'ticket_id'   => $ticket_id,
+                    'file_name'   => $file['origName'],
+                    'file_path'   => 'assets/images/ticket_attachments/' . $file['encryptedName'],
+                    'file_type'   => pathinfo($file['origName'], PATHINFO_EXTENSION),
+                    'uploaded_at' => date('Y-m-d H:i:s')
+                ];
+            
+                
+            }
         }
 
         $this->db->trans_complete();
 
+        
+        // $mark = false;
+        //  if ($mark === FALSE) {
         if ($this->db->trans_status() === FALSE) {
-            return ['status' => FALSE, 'message' => 'Upload Failed!'];
+            return ['status' => FALSE, 'message' => "We couldn’t create your ticket. Please review your details and try again"];
         } else {
             $ticket_code = 'TCK-' . str_pad($ticket_id, 5, '0', STR_PAD_LEFT);
             return ['status' => TRUE, 'message' => 'Ticket created! Code: ' . $ticket_code];
         }
-    }
 
+        
+    }
 
     public function getTickets()
     {

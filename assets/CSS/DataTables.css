@@ -10,8 +10,7 @@ select.dt-input {
         margin-top: 8px;
         font-size: 14px !important;
         align-items: center;
-        justify-content: center;
-        justify-content: space-between;
+        justify-content: space-between !important;
 }
 
 .dt-search-wrapper {
@@ -75,3 +74,11 @@ select.dt-input {
 .priority_circle {
     background-color: yellow !important;
 } */
+.dt-layout-start {
+    display: flex;
+    margin-top: 8px;
+    font-size: 14px !important;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+}

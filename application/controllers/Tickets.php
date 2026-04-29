@@ -6,15 +6,17 @@
  *  @property upload $upload
  * @property input $input
  * @property db $db
- *  @property Tickets_Model $Tickets_Model
+ * @property Tickets_Model $Tickets_Model
+ * @property session $session
  */
 
 class Tickets extends CI_Controller
 {
 
+    //create tickets
     public function CrtTickets()
     {
-        //validation
+        // validation
         $this->form_validation->set_rules('ticket_title', 'Title', 'required');
         $this->form_validation->set_rules('ticket_body', 'Description', 'required');
         $this->form_validation->set_rules('departments', 'Category', 'required');
@@ -24,40 +26,42 @@ class Tickets extends CI_Controller
         //if lahat may pumasa sa validation try to 
         if ($this->form_validation->run()) {
 
-            //check kung may laman yung attachments
-            if (empty($_FILES['userfile']['name'][0])) {
-                $data['error']       = 'Attachments are required!';
-                $data['departments'] = $this->Tickets_Model->getDprtmnts();
-                $this->load->view('pages/create_tickets', $data);
-                return;
-            }
+
 
             $files_uploaded = $_FILES['userfile'];
-            $count          = count($_FILES['userfile']['name']);
-            $fileNames      = [];
+            $fileNames = [];
 
-            $this->load->library('upload');
+            if (!empty($files_uploaded['name'][0])) {
 
-            for ($i = 0; $i < $count; $i++) {
-                $_FILES['file']['name']     = $files_uploaded['name'][$i];
-                $_FILES['file']['type']     = $files_uploaded['type'][$i];
-                $_FILES['file']['tmp_name'] = $files_uploaded['tmp_name'][$i];
-                $_FILES['file']['error']    = $files_uploaded['error'][$i];
-                $_FILES['file']['size']     = $files_uploaded['size'][$i];
+                $count = count($files_uploaded['name']);
 
-                $config['upload_path']   = './assets/images/ticket_attachments';
-                $config['allowed_types'] = 'gif|jpg|png|jpeg|docx|ppt|pptx|zip|rar|pdf';
-                $config['encrypt_name']  = TRUE;
-                $this->upload->initialize($config);
+                $this->load->library('upload');
 
-                if ($this->upload->do_upload('file')) {
-                    $uploadData  = $this->upload->data();
-                    $fileNames[] = [
-                        'origName'      => $uploadData['orig_name'],
-                        'encryptedName' => $uploadData['file_name']
-                    ];
-                } else {
-                    echo $this->upload->display_errors();
+                for ($i = 0; $i < $count; $i++) {
+
+                    $_FILES['file']['name']     = $files_uploaded['name'][$i];
+                    $_FILES['file']['type']     = $files_uploaded['type'][$i];
+                    $_FILES['file']['tmp_name'] = $files_uploaded['tmp_name'][$i];
+                    $_FILES['file']['error']    = $files_uploaded['error'][$i];
+                    $_FILES['file']['size']     = $files_uploaded['size'][$i];
+
+                    $config['upload_path']   = './assets/images/ticket_attachments';
+                    $config['allowed_types'] = 'gif|jpg|png|jpeg|docx|ppt|pptx|zip|rar|pdf';
+                    $config['encrypt_name']  = TRUE;
+
+                    $this->upload->initialize($config);
+
+                    if ($this->upload->do_upload('file')) {
+                        $uploadData = $this->upload->data();
+
+                        $fileNames[] = [
+                            'origName'      => $uploadData['orig_name'],
+                            'encryptedName' => $uploadData['file_name']
+                        ];
+                    } else {
+                        // optional: log instead of echo
+                        log_message('error', $this->upload->display_errors());
+                    }
                 }
             }
 
@@ -65,10 +69,14 @@ class Tickets extends CI_Controller
             $result = $this->Tickets_Model->insrtCrtdTicket($fileNames);
 
             if ($result['status'] === TRUE) {
-
-                redirect('send'); //mapupunta sa send tickets parin
+                $this->session->set_flashdata('success', $result['message']); // e.g. "Ticket created! Code: TCK-00001"
+                redirect('tickets/send');
             } else {
-                show_error($result['message']);
+                $data['error'] = $result['message'];
+                $data['departments'] = $this->Tickets_Model->getDprtmnts();
+
+                $this->load->view('pages/navbar', $data);
+                $this->load->view('pages/create_tickets', $data);
             }
         } else {
             $data['departments'] = $this->Tickets_Model->getDprtmnts();
