@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @property form_validation $form_validation
+ * @property CI_Form_validation $form_validation
  * @property Auth_Model $Auth_Model
  * @property Tickets_Model $Tickets_Model
- * @property session $session
+ * @property CI_Session $session
  */
 
 class Pages extends CI_Controller
@@ -64,5 +64,17 @@ class Pages extends CI_Controller
     {
         $data['departments'] = $this->Tickets_Model->getDprtmnts();
         $this->load->view('pages/create_tickets', $data);
+    }
+
+    public function diplayTickt()
+    {
+
+        if ($this->session->userdata('is_loggedin')) {
+            $this->load->view('pages/navbar');
+            $this->load->view('pages/view_tickets');
+        } else {
+            $this->session->set_flashdata('error', "You must be logged in to access Different page.");
+            redirect('login');
+        }
     }
 }

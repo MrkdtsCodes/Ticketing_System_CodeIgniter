@@ -70,6 +70,7 @@ class Tickets_Model extends CI_Model
         tickets.title,
         tickets.priority,
         tickets.status,
+        dept.dept_name,
         tickets.created_at,
         tickets.updated_at,
         CONCAT(author_details.firstname, ' ', author_details.lastname) AS author_fullname,
@@ -82,6 +83,9 @@ class Tickets_Model extends CI_Model
         $this->db->join('employee_details AS author_details', 'author_account.emp_id = author_details.id', 'left');
         $this->db->join('account AS pic_account', 'tickets.assignee_id = pic_account.id', 'left');
         $this->db->join('employee_details AS pic_details', 'pic_account.emp_id = pic_details.id', 'left');
+        $this->db->join('department AS dept', 'tickets.department_id = dept.id');
+        // LEFT JOIN department as dept on tickets.department_id = dept.id
+
 
         $query = $this->db->get();
         return $query->result_array();

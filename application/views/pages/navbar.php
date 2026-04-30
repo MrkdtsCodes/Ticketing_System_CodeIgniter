@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aurum — Help Desk</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.3.0/dist/flowbite.min.css" rel="stylesheet" />
     <link
@@ -27,15 +26,15 @@
                             class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
                             <li>
                                 <a href="#"
-                                    class="block py-2 px-3 text-white bg-blue-600 rounded md:bg-transparent md:text-blue-600 md:p-0"
-                                    aria-current="page">Home</a>
+                                    class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 transition-colors" 
+                                    >Home</a>
                             </li>
                             <li>
                                 <a href="#"
                                     class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 transition-colors">Dashboard</a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a href="<?php echo base_url('tickets/dashboard')?>"
                                     class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 transition-colors">Tickets</a>
                             </li>
                             <li>
@@ -48,7 +47,7 @@
 
             <div class="flex items-center gap-4 md:gap-6">
 
-                <a href="<?php echo base_url('create/tickets') ?>">
+                <a href="<?php echo base_url('tickets/create') ?>">
                     <button type="button"
                         class="hidden md:flex items-center gap-2 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 focus:outline-none transition-colors">
                         <svg class="rotate-12 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -98,7 +97,7 @@
                                     </li>
                                 </a>
 
-                                <a href=" <?php echo base_url('Logout ') ?>">
+                                <a href=" <?php echo base_url(' ') ?>">
                                     <li class="py-2 px-14 hover:bg-blue-700 hover:text-white" ">
                                         settings
                                     </li>

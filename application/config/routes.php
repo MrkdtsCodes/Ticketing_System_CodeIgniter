@@ -19,7 +19,7 @@ $route['create/account'] = 'AuthProcess/Insrtdata';
 $route['navbar'] = 'Pages/displayNav';
 
 //display tickets UI
-$route['create/tickets'] = 'Pages/displayCreateTickets';
+$route['tickets/create'] = 'Pages/displayCreateTickets';
 
 //create tickets
 $route['tickets/send'] = 'Tickets/CrtTickets';
@@ -28,4 +28,7 @@ $route['tickets/send'] = 'Tickets/CrtTickets';
 $route['Logout'] = 'AuthProcess/Logout';
 
 //dashboard
-$route['dashboard'] = 'Pages/displayDshbrd';
+$route['tickets/dashboard'] = 'Pages/displayDshbrd';
+
+//view ticket created
+$route['tickets/view'] = 'Pages/diplayTickt';

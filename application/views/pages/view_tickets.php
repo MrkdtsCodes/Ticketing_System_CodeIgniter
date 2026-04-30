@@ -48,7 +48,7 @@
                             </path>
                         </svg>
                     </div>
-                    <h1 class="text-xl font-bold ml-3 text-gray-800">Create Ticket</h1>
+                    <h1 class="text-xl font-bold ml-3 text-gray-800">View Ticket</h1>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -260,16 +260,6 @@
 
             // Re-draw the UI to show the file is gone
             updatePreviewUI();
-
-
-
-
-
-
-
-
-
-
         }
     </script>
 </body>

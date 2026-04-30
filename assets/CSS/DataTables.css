@@ -17,15 +17,10 @@ select.dt-input {
     display: flex;
     flex-direction: row-reverse;
     }
-.navsearch {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    width: 100%;
-}
 
 #dt-search-0 {
     border-radius: 15px !important;
+    order: 0;
 }
 
 /* PAGINATION */
