@@ -1,9 +1,9 @@
 <?php
 /**
- * @property form_validation $form_validation
+ * @property CI_Form_validation $form_validation
  * @property Auth_Model $Auth_Model
- *   @property input $input
- *  @property session $session
+ * @property CI_input $input
+ *  @property CI_Session $session
  */
 
 class AuthProcess extends CI_Controller
@@ -36,7 +36,7 @@ class AuthProcess extends CI_Controller
 
                 $this->session->set_userdata($user_data);
 
-                redirect('create/tickets');
+                redirect('tickets/create');
                 //create session
             } else {
                 $this->session->set_flashdata('error', 'Email and Password did not match');

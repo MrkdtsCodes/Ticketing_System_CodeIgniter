@@ -69,7 +69,7 @@ class Pages extends CI_Controller
     public function diplayTickt()
     {
 
-        if ($this->session->userdata('is_loggedin')) {
+        if ($this->session->userdata('is_loggedin')) {  
             $this->load->view('pages/navbar');
             $this->load->view('pages/view_tickets');
         } else {

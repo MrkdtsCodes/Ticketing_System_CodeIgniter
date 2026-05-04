@@ -1,105 +1,112 @@
+const STATUS_COL = 5;
+const PRIORITY_COL = 6;
 
-        const table = $('#myTable').DataTable({
-            order: [
-                [0, 'asc']
-            ],
-            responsive: false,
-            stateSave: true,
+const table = $('#myTable').DataTable({
+    order: [[0, 'asc']],
+    responsive: false,
+    stateSave: true,
 
+    dom: 'Bf t<"bottom"l p i>',
 
-            dom: 'f t<"bottom"l p i>',
+    pageLength: 5,
+    pagingType: "simple_numbers",
 
-            pageLength: 5,
-            pagingType: "simple_numbers",
-            language: {
-                search: "",
-                searchPlaceholder: "Search tickets..."
-            },
+    language: {
+        search: "",
+        searchPlaceholder: "Search tickets..."
+    },
 
-
-            buttons: [{
-                    extend: 'excel',
-                    title: 'Tickets Report',
-                    exportOptions: {
-                        columns: ':not(:last-child)'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    title: 'Tickets Report',
-                    exportOptions: {
-                        columns: ':not(:last-child)'
-                    }
-                }
-            ],
-        });
-
-        // Move search input into custom wrapper
-        $('.dt-search-wrapper').append($('.dt-search input'));
-
-        //export buttons
-        $('#exportExcelBtn').on('click', function() {
-            table.button('.buttons-excel').trigger();
-        });
-
-        $('#exportPdfBtn').on('click', function() {
-            table.button('.buttons-pdf').trigger();
-        });
-
-        // ── Nav filter tabs ─────────────────────────────────────────────
-        const STATUS_COL = 4;
-
-        $('.navsearch-tab').on('click', function() {
-            // Active styling
-            $('.navsearch-tab')
-                .removeClass('bg-slate-500 text-white')
-                .addClass('bg-slate-100 text-slate-600');
-            $(this)
-                .removeClass('bg-slate-100 text-slate-600')
-                .addClass('bg-slate-500 text-white');
-
-            const filter = $(this).data('filter'); // 
-
-            if (filter === '') {
-                // Clear filter — show all rows
-                table.column(STATUS_COL).search('').draw();
-            } else {
-                // Exact-match search on the status text inside .status_badge
-                table.column(STATUS_COL).search(filter, false, false).draw();
+    buttons: [
+        {
+            extend: 'excel',
+            title: 'Tickets Report',
+            exportOptions: {
+                columns: ':not(:last-child)'
             }
-        });
-
-        $('#filterbtn').on('click', function(){
-            $('#showFilter').slideToggle(200);
-        });
-
-
-        const priority_cols = 5;
-
-        $('.prioTab').on('change', function(){
-            const filter = $(this).val();
-
-            if(filter === ''){
-                table.column(priority_cols).search('').draw();
-            }else{
-                 table.column(priority_cols).search(filter, false, false).draw();
+        },
+        {
+            extend: 'pdf',
+            title: 'Tickets Report',
+            exportOptions: {
+                columns: ':not(:last-child)'
             }
-        });
-
-        $('.reset').on('click', function(){
-
-            $('.navsearch-tab')
-                .removeClass('bg-slate-500 text-white')
-                .addClass('bg-slate-100 text-slate-600');
-            $('#reset_tab')
-                .removeClass('bg-slate-100 text-slate-600')
-                .addClass('bg-slate-500 text-white');
-            $('#priority').val('');
-            table.search('').columns().search('').draw();
-        });
+        }
+    ],
+});
 
 
 
+$('.dt-search-wrapper').append($('.dt-search input'));
 
 
-    
+// ✅ Export buttons
+$('#exportExcelBtn').on('click', function () {
+    table.button('.buttons-excel').trigger();
+});
+
+$('#exportPdfBtn').on('click', function () {
+    table.button('.buttons-pdf').trigger();
+});
+
+
+$('.navsearch-tab').on('click', function () {
+
+    $('.navsearch-tab')
+        .removeClass('bg-slate-500 text-white')
+        .addClass('bg-slate-100 text-slate-600');
+
+    $(this)
+        .removeClass('bg-slate-100 text-slate-600')
+        .addClass('bg-slate-500 text-white');
+
+    const filter = $(this).data('filter');
+
+    if (!filter) {
+        table.column(STATUS_COL).search('').draw();
+    } else {
+        table.column(STATUS_COL).search('^' + filter + '$', true, false).draw();
+    }
+});
+
+
+$('#filterbtn').on('click', function () {
+    $('#showFilter').slideToggle(200);
+});
+
+// STATUS dropdown
+$('#statusTab').on('change', function () {
+    const val = $(this).val();
+
+    if (!val) {
+        table.column(STATUS_COL).search('').draw();
+    } else {
+        table.column(STATUS_COL).search('^' + val + '$', true, false).draw();
+    }
+});
+
+// PRIORITY dropdown
+$('#priority').on('change', function () {
+    const val = $(this).val();
+
+    if (!val) {
+        table.column(PRIORITY_COL).search('').draw();
+    } else {
+        table.column(PRIORITY_COL).search('^' + val + '$', true, false).draw();
+    }
+});
+
+
+$('.reset').on('click', function () {
+
+    // reset tabs UI
+    $('.navsearch-tab')
+        .removeClass('bg-slate-500 text-white')
+        .addClass('bg-slate-100 text-slate-600');
+
+    // reset dropdowns
+    $('#priority').val('');
+    $('#statusTab').val('');
+
+    // clear filters
+    table.search('').columns().search('').draw();
+});

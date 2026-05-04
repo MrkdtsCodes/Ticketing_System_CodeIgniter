@@ -147,7 +147,7 @@
                             </div>
                         </div>
 
-                        <div>
+                        <!-- <div>
                             <label class="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">
                                 Ticket status
                             </label>
@@ -162,7 +162,7 @@
                                 </select>
 
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="pt-4 flex flex-col gap-5">
                             <button
@@ -171,7 +171,7 @@
                             </button>
 
                             <input type="reset"
-                                class="w-full text-white text-center bg-red-400 hover:bg-red-700 font-medium rounded-lg text-sm px-5 py-3 transition-colors focus:ring-4 focus:ring-green-500"
+                                class="w-full text-white text-center bg-red-400 hover:bg-red-700 font-medium rounded-lg text-sm px-5 py-3 transition-colors focus:ring-4 focus:ring-red-500"
                                 value="Clear">
 
                         </div>
