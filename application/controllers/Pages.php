@@ -66,12 +66,31 @@ class Pages extends CI_Controller
         $this->load->view('pages/create_tickets', $data);
     }
 
+    
+
+
     public function diplayTickt()
     {
 
         if ($this->session->userdata('is_loggedin')) {  
             $this->load->view('pages/navbar');
             $this->load->view('pages/view_tickets');
+        } else {
+            $this->session->set_flashdata('error', "You must be logged in to access Different page.");
+            redirect('login');
+        }
+    }
+
+    //------------------------------------TABLE PAGES---------------------------------------------------------------------/
+
+
+
+    public function displayApprvlPgs(){
+         if ($this->session->userdata('is_loggedin')) {  
+            $data['crtdTickets'] = $this->Tickets_Model->getForApprovalTickets();
+  
+            $this->load->view('pages/navbar');
+            $this->load->view('pages/approval_page' , $data);
         } else {
             $this->session->set_flashdata('error', "You must be logged in to access Different page.");
             redirect('login');

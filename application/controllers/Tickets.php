@@ -19,7 +19,6 @@ class Tickets extends CI_Controller
         $this->form_validation->set_rules('ticket_title', 'Title', 'required');
         $this->form_validation->set_rules('ticket_body', 'Description', 'required');
         $this->form_validation->set_rules('departments', 'Category', 'required');
-        $this->form_validation->set_rules('priority', 'Priority', 'required');
 
         if ($this->form_validation->run()) {
 
@@ -85,6 +84,8 @@ class Tickets extends CI_Controller
         $this->load->view('pages/navbar');
         $this->load->view('pages/view_tickets', $data);
     }
+
+     //------------------------------------TABLE PAGES---------------------------------------------------------------------
 
 
     public function UpdateTckts($tcktID)
@@ -152,4 +153,17 @@ class Tickets extends CI_Controller
             $this->load->view('pages/view_tickets', $data);                         
         }                                                                           
     }
+
+
+    //status update to approve
+    public function updateStatus($status, $id)
+    {   
+        $data['data']  = $this->Tickets_Model->updatedStatus($status, $id);
+    }
+    //UPDATING TO REJECT
+    public function updateStatusReject($status, $id)
+    {   
+        $data['data']  = $this->Tickets_Model->updatedStatusReject($status, $id);
+    }
+
 }

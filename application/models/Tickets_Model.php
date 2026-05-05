@@ -2,12 +2,40 @@
 
 class Tickets_Model extends CI_Model
 {
+
+    private function _baseTicketQuery(){
+         $this->db->select("
+            tickets.id,
+            CONCAT('TCK-', LPAD(tickets.id, 5, '0')) AS ticket_code,
+            tickets.title,
+            tickets.body,
+            tickets.department_id,
+            tickets.priority,
+            tickets.status,
+            dept.dept_name,
+            tickets.created_at,
+            tickets.updated_at,
+            DATEDIFF(NOW(), tickets.created_at) AS Ticket_Age,
+            CONCAT(author_details.firstname, ' ', author_details.lastname) AS author_fullname,
+            CONCAT(pic_details.firstname, ' ', pic_details.lastname) AS pic_fullname
+        ", FALSE);
+
+        $this->db->from('tickets');
+        $this->db->join('account AS author_account', 'tickets.author_id = author_account.id', 'left');
+        $this->db->join('employee_details AS author_details', 'author_account.emp_id = author_details.id', 'left');
+        $this->db->join('account AS pic_account', 'tickets.assignee_id = pic_account.id', 'left');
+        $this->db->join('employee_details AS pic_details', 'pic_account.emp_id = pic_details.id', 'left');
+        $this->db->join('department AS dept', 'tickets.department_id = dept.id');
+
+    }
     // Get departments from the database
     public function getDprtmnts()
     {
         $query = $this->db->get('department');
         return $query->result_array();
     }
+
+
 
 
     public function insrtCrtdTicket($filename)
@@ -21,7 +49,6 @@ class Tickets_Model extends CI_Model
             'department_id' => $this->input->post('departments'),
             'title'         => $this->input->post('ticket_title'),
             'body'          => $this->input->post('ticket_body'),
-            'priority'      => $this->input->post('priority'),
             'status'        => 'For Approval',
         ];
 
@@ -62,28 +89,7 @@ class Tickets_Model extends CI_Model
 
     public function getTickets()
     {
-        $this->db->select("
-            tickets.id,
-            CONCAT('TCK-', LPAD(tickets.id, 5, '0')) AS ticket_code,
-            tickets.title,
-            tickets.body,
-            tickets.department_id,
-            tickets.priority,
-            tickets.status,
-            dept.dept_name,
-            tickets.created_at,
-            tickets.updated_at,
-            DATEDIFF(NOW(), tickets.created_at) AS Ticket_Age,
-            CONCAT(author_details.firstname, ' ', author_details.lastname) AS author_fullname,
-            CONCAT(pic_details.firstname, ' ', pic_details.lastname) AS pic_fullname
-        ", FALSE);
-
-        $this->db->from('tickets');
-        $this->db->join('account AS author_account', 'tickets.author_id = author_account.id', 'left');
-        $this->db->join('employee_details AS author_details', 'author_account.emp_id = author_details.id', 'left');
-        $this->db->join('account AS pic_account', 'tickets.assignee_id = pic_account.id', 'left');
-        $this->db->join('employee_details AS pic_details', 'pic_account.emp_id = pic_details.id', 'left');
-        $this->db->join('department AS dept', 'tickets.department_id = dept.id');
+        $this->_baseTicketQuery();
 
         $query = $this->db->get();
         return $query->result_array();
@@ -93,29 +99,7 @@ class Tickets_Model extends CI_Model
     public function getViewTckts($tcktID)
     {
      
-        $this->db->select("
-            tickets.id,
-            CONCAT('TCK-', LPAD(tickets.id, 5, '0')) AS ticket_code,
-            tickets.title,
-            tickets.body,
-            tickets.department_id,
-            tickets.priority,
-            tickets.status,
-            dept.dept_name,
-            tickets.created_at,
-            tickets.updated_at,
-            DATEDIFF(NOW(), tickets.created_at) AS Ticket_Age,
-            CONCAT(author_details.firstname, ' ', author_details.lastname) AS author_fullname,
-            CONCAT(pic_details.firstname, ' ', pic_details.lastname) AS pic_fullname
-        ", FALSE);
-
-        $this->db->from('tickets');
-        $this->db->join('account AS author_account', 'tickets.author_id = author_account.id', 'left');
-        $this->db->join('employee_details AS author_details', 'author_account.emp_id = author_details.id', 'left');
-        $this->db->join('account AS pic_account', 'tickets.assignee_id = pic_account.id', 'left');
-        $this->db->join('employee_details AS pic_details', 'pic_account.emp_id = pic_details.id', 'left');
-        $this->db->join('department AS dept', 'tickets.department_id = dept.id');
-        $this->db->where('tickets.id', $tcktID);
+       $this->_baseTicketQuery();
 
         return $this->db->get()->row();
     }
@@ -159,4 +143,44 @@ class Tickets_Model extends CI_Model
         $ticket_code = 'TCK-' . str_pad($tcktID, 5, '0', STR_PAD_LEFT);
         return ['status' => TRUE, 'message' => 'Ticket Updated! Code: ' . $ticket_code];
     }
+
+
+    //approval page
+      public function getForApprovalTickets()
+    {
+        $this->_baseTicketQuery();
+
+        // Only this line is different from getTickets()
+        $this->db->where('tickets.status', 'For Approval');
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function updatedStatus($status, $id)
+    {   
+
+        $sendstatus = [
+            'status' => $status
+        ];
+        
+        $this->db->where('id', $id);
+        $this->db->update('tickets', $sendstatus);
+    }
+
+    public function updatedStatusReject($status, $id)
+    {   
+        
+        $sendstatus = [
+            
+            'status' => $status
+        ];
+        
+        $this->db->where('id', $id);
+        $this->db->update('tickets', $sendstatus);
+    }
+        
+
+
+
 }

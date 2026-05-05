@@ -179,6 +179,43 @@
                             </div>
                         </div>
 
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">
+                                Ticket Actions
+                            </label>
+
+
+                            <div class="relative flex flex-row gap-4">
+                                <div class="w-full text-center text-white bg-green-500 hover:bg-green-700 font-medium rounded-lg text-sm px-5 py-3 transition-colors focus:ring-4 focus:ring-green-500">
+                                    <button class="">Approve</button>
+                                </div>
+                                
+                                <div class="w-full text-center text-white bg-red-500 hover:bg-red-700 font-medium rounded-lg text-sm px-5 py-3 transition-colors focus:ring-4 focus:ring-green-500">
+                                    <button class="">Reject</button>
+                                </div> 
+                               
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">
+                                Ticket Priority
+                            </label>
+
+
+                            <div class="relative">
+                                <select name="priority"
+                                    class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 appearance-none text-gray-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors cursor-pointer">
+                                    <option value="low" <?php echo $tckt_details->status == 'low' ? 'selected' : '' ?>>low</option>
+                                    <option value="medium" <?php echo $tckt_details->status == 'medium' ? 'selected' : '' ?>>medium</option>
+                                    <option value="high" <?php echo $tckt_details->status == 'high' ? 'selected' : '' ?>>high</option>
+                                    <option value="urgent" <?php echo $tckt_details->status == 'urgent' ? 'selected' : '' ?>>urgent</option>
+
+                                </select>
+                                <small class="text-red-500"><?php echo form_error('priority') ?></small>
+                            </div>
+                        </div>
+
                         <div class="pt-4 flex flex-col gap-5">
                             <button
                                 class="w-full text-white bg-green-500 hover:bg-green-700 font-medium rounded-lg text-sm px-5 py-3 transition-colors focus:ring-4 focus:ring-green-500">

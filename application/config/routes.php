@@ -36,3 +36,11 @@ $route['tickets/view/(:any)'] = 'Tickets/Viewtckts/$1';
 
 //update ticket assign
 $route['tickets/update/(:any)'] = 'Tickets/UpdateTckts/$1';
+
+
+//TABLE PAGES
+
+$route['tickets/approval'] = 'Pages/displayApprvlPgs';
+
+//update status tickets to approve ot reject
+$route['tickets/status/(:any)/(:any)'] = 'Tickets/updateStatus/$1/$2';

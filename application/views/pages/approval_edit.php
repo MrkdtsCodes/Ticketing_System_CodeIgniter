@@ -21,22 +21,30 @@
 
 <body class="bg-gray-50">
 
+
     <main class="pt-28 pb-12 px-4">
 
         <?php if (!empty($error)) : ?>
             <div class="mb-3 flex flex-row justify-center gap-3 max-w-6xl mx-auto bg-white border border-gray-200 rounded-xl p-1 md:p-8 shadow-s text-red-500">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ticket-x-icon lucide-ticket-x"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="m9.5 14.5 5-5"/><path d="m9.5 9.5 5 5"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ticket-x-icon lucide-ticket-x">
+                    <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+                    <path d="m9.5 14.5 5-5" />
+                    <path d="m9.5 9.5 5 5" />
+                </svg>
                 <?= $error ?>
             </div>
 
         <?php elseif ($this->session->flashdata('success')): ?>
             <div class="mb-3 flex flex-row justify-center gap-3 max-w-6xl mx-auto bg-white border border-gray-200 rounded-xl p-1 md:p-8 shadow-s text-green-500">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ticket-check-icon lucide-ticket-check"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="m9 12 2 2 4-4"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ticket-check-icon lucide-ticket-check">
+                    <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+                    <path d="m9 12 2 2 4-4" />
+                </svg>
                 <?= $this->session->flashdata('success') ?>
             </div>
         <?php endif; ?>
 
-        <form action="<?php echo base_url('tickets/send') ?>" method="POST" enctype="multipart/form-data">
+        <form action="<?php echo base_url('tickets/update/' . $tckt_details->id) ?>" method="POST" enctype="multipart/form-data">
             <div class="max-w-6xl mx-auto bg-white border border-gray-200 rounded-xl p-6 md:p-8 shadow-sm">
 
                 <div class="flex items-center mb-8 border-b border-gray-100 pb-4">
@@ -48,7 +56,7 @@
                             </path>
                         </svg>
                     </div>
-                    <h1 class="text-xl font-bold ml-3 text-gray-800">Create Ticket</h1>
+                    <h1 class="text-xl font-bold ml-3 text-gray-800">View Ticket</h1>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -59,7 +67,7 @@
                             <label class="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">
                                 Subject
                             </label>
-                            <input type="text" placeholder="Enter ticket subject..." name="ticket_title"
+                            <input type="text" placeholder="Enter ticket subject..." name="ticket_title" value="<?php echo $tckt_details->title ?>"
                                 class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
                             <small class="text-red-500"><?php echo form_error('ticket_title') ?></small>
                         </div>
@@ -88,7 +96,7 @@
 
                                 <textarea
                                     class="border border-transparent w-full h-64 p-4 text-sm bg-transparent resize-none outline-none placeholder:text-gray-400"
-                                    placeholder="Please describe your issue in detail..." name="ticket_body"></textarea>
+                                    placeholder="Please describe your issue in detail..." name="ticket_body"><?= $tckt_details->body ?></textarea>
 
                             </div>
                             <small class="text-red-500"><?php echo form_error('ticket_body') ?></small>
@@ -120,49 +128,56 @@
                             <div class="relative">
                                 <select name="departments"
                                     class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 appearance-none text-gray-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors cursor-pointer">
-                                    <option value="" disabled selected>Select Department</option>
+
                                     <?php foreach ($departments as $departs): ?>
-                                        <option value="<?php echo $departs['id'] ?>"><?php echo $departs['dept_name'] ?>
-                                        </option>
+                                        <?php if ($departs['id'] == $tckt_details->department_id): ?>
+                                            <option value="<?php echo $departs['id'] ?>" selected><?php echo $departs['dept_name'] ?></option>
+                                        <?php else: ?>
+                                            <option value="<?php echo $departs['id'] ?>"><?php echo $departs['dept_name'] ?></option>
+                                        <?php endif ?>
+
+
                                     <?php endforeach ?>
                                 </select>
                                 <small class="text-red-500"><?php echo form_error('departments') ?></small>
                             </div>
                         </div>
 
-                        <!-- <div>
+                        <div>
                             <label class="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">
-                                Ticket Priority
-                            </label>
-                            <div class="relative">
-                                <select name="priority"
-                                    class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 appearance-none text-gray-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors cursor-pointer">
-                                    <option value="" disabled selected>Select Priority</option>
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                    <option value="urgent">Urgent</option>
-                                </select>
-                                <small class="text-red-500"><?php echo form_error('priority') ?></small>
-                            </div>
-                        </div> -->
-
-                        <!-- <div>
-                            <label class="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">
-                                Ticket status
+                                Ticket Status
                             </label>
                             <div class="relative">
                                 <select name="status"
                                     class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 appearance-none text-gray-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors cursor-pointer">
-                                    <option value="" disabled selected>To Assign</option>
-                                    <option value="low" disabled>Open</option>
-                                    <option value="medium" disabled>Ongoing</option>
-                                    <option value="high" disabled>High</option>
-                                    <option value="urgent" disabled>Urgent</option>
+                                    <option value="Open" <?php echo $tckt_details->priority == 'Open' ? 'selected' : '' ?>>Open</option>
+                                    <option value="In Progress" <?php echo $tckt_details->priority == 'In Progress' ? 'selected' : '' ?>>In Progress</option>
+                                    <option value="For Approval" <?php echo $tckt_details->priority == 'For Approval' ? 'selected' : '' ?>>For Approval</option>
+                                    <option value="Closed" <?php echo $tckt_details->priority == 'Closed' ? 'selected' : '' ?>>Closed</option>
                                 </select>
 
                             </div>
-                        </div> -->
+
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">
+                                Ticket Priority
+                            </label>
+
+
+                            <div class="relative">
+                                <select name="priority"
+                                    class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 appearance-none text-gray-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors cursor-pointer">
+                                    <option value="low" <?php echo $tckt_details->status == 'low' ? 'selected' : '' ?>>low</option>
+                                    <option value="medium" <?php echo $tckt_details->status == 'medium' ? 'selected' : '' ?>>medium</option>
+                                    <option value="high" <?php echo $tckt_details->status == 'high' ? 'selected' : '' ?>>high</option>
+                                    <option value="urgent" <?php echo $tckt_details->status == 'urgent' ? 'selected' : '' ?>>urgent</option>
+
+                                </select>
+                                <small class="text-red-500"><?php echo form_error('priority') ?></small>
+                            </div>
+                        </div>
 
                         <div class="pt-4 flex flex-col gap-5">
                             <button
@@ -171,7 +186,7 @@
                             </button>
 
                             <input type="reset"
-                                class="w-full text-white text-center bg-red-400 hover:bg-red-700 font-medium rounded-lg text-sm px-5 py-3 transition-colors focus:ring-4 focus:ring-red-500"
+                                class="w-full text-white text-center bg-red-400 hover:bg-red-700 font-medium rounded-lg text-sm px-5 py-3 transition-colors focus:ring-4 focus:ring-green-500"
                                 value="Clear">
 
                         </div>
@@ -260,16 +275,6 @@
 
             // Re-draw the UI to show the file is gone
             updatePreviewUI();
-
-
-
-
-
-
-
-
-
-
         }
     </script>
 </body>

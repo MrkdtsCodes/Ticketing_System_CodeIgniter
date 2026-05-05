@@ -40,7 +40,7 @@
                 <div class="dt-search-wrapper flex items-center gap-3 flex-row">
 
                     <!-- FILTER ICON -->
-                   <div class="relative group order-1 ">
+                    <div class="relative group order-1 ">
                         <div id="filterbtn"
                             class="filterbtn flex items-center justify-center text-white bg-blue-500 p-3 rounded-lg cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
@@ -77,14 +77,17 @@
                 <!-- RIGHT SIDE: NAV TABS -->
                 <div class="flex items-center justify-end gap-2 flex-row flex-wrap">
 
-                    <div    
-                        class="px-6 py-2 rounded-md text-sm font-medium bg-slate-500 border border-slate-200 text-white hover:bg-slate-500 hover:text-white transition cursor-pointer">
-                        All
-                    </div>
+
+                    <a href="<?php echo base_url('tickets/dashboard') ?>">
+                        <div
+                            class="px-6 py-2 rounded-md text-sm font-medium bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-500 hover:text-white transition cursor-pointer">
+                            All
+                        </div>
+                    </a>
 
                     <a href="<?php echo base_url('tickets/approval') ?>">
                         <div
-                            class="px-6 py-2 rounded-md text-sm font-medium bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-500 hover:text-white transition cursor-pointer">
+                            class="px-6 py-2 rounded-md text-sm font-medium bg-slate-500 border border-slate-200 text-slate-100 hover:bg-slate-500 hover:text-white transition cursor-pointer">
                             For Approval
                         </div>
                     </a>
@@ -194,7 +197,8 @@
                         ?>
 
                         <tr class="bg-white hover:bg-slate-50 transition border border-slate-100 rounded-lg">
-                            <td class="px-4 py-3 text-sm text-slate-700">
+
+                           <td class="px-4 py-3 text-sm text-slate-700">
                                 <div class=" flex justify-center ">
                                    <?= $ticket['Ticket_Age'] ?>
                                 </div>
@@ -202,28 +206,7 @@
                             <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['ticket_code'] ?></td>
                             <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['title'] ?></td>
                             <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['author_fullname'] ?></td>
-                            <!-- <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['pic_fullname'] ?></td> -->
-                            <td class="px-4 py-3 text-sm text-slate-700">
-                                <div class="flex flex-col">
-                                    <?php if(strtolower($ticket['status']) === 'approved'):?>
-                                    <a href="">
-                                        <div class="flex justify-center">
-                                            <button class="border border-slate-400">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-plus-icon lucide-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-                                                <!-- Assign -->
-                                            </button>
-                                        </div>
-                                    <?php else: ?>
-                                        <div class="flex justify-center border border-slate-500">
-                                            <button>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus-icon lucide-minus"><path d="M5 12h14"/></svg>
-                                            </button>
-                                        </div>
-                                    </a>
-                                    <?php endif; ?>
-                                </div>
-                           
-                            </td>
+                            <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['pic_fullname'] ?></td>
 
                             <!-- STATUS BADGE -->
                             <td class="px-4 py-3" data-search="<?= $ticket['status'] ?>">
@@ -231,7 +214,7 @@
                                 if ($s === 'approved')
                                     echo '#4ade80';
                                 elseif ($s === 'on going') echo '#3d76fb';
-                                // elseif ($s === 'for approval') echo '#94a3b8';
+                                // elseif ($s === '') echo '#94a3b8';
                                 elseif ($s === 'rejected')
                                     echo '#ef4444';
                                 else
@@ -291,13 +274,13 @@
 
                                     <!-- VIEW BUTTON -->
                                     <a href="<?= base_url('tickets/view/' . $ticket['id']) ?>">
-                                       <div class="relative group">
-                                             <button
+                                        <div class="relative group">
+                                            <button
                                                 class="p-1 bg-slate-100 rounded-md border border-slate-500 text-slate-500 flex items-center justify-center">
                                                 <div class="flex justify-center items-center contents-center m-auto">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                                         class="lucide lucide-eye-icon lucide-eye">
                                                         <path
                                                             d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
@@ -310,18 +293,17 @@
                                                     opacity-0 group-hover:opacity-100 transition-opacity duration-200
                                                     bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap
                                                     pointer-events-none">
-                                                    View Ticket
+                                                View Ticket
                                             </span>
-                                       </div>
+                                        </div>
                                     </a>
 
-                                    
-                              
                                     <!-- APPROVE BUTTON -->
                                     <a href="<?= base_url('tickets/status/approved/' . $ticket['id']) ?>">
                                         <div class="relative group">
-                                            <button 
-                                                class=" p-1 bg-[#f0fdf4] rounded-md border border-green-500 text-green-500 flex items-center justify-center" aria-label="Approve Ticket">
+                                            <button
+                                                class=" p-1 bg-[#f0fdf4] rounded-md border border-green-500 text-green-500 flex items-center justify-center"
+                                                aria-label="Approve Ticket">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                     stroke-linecap="round" stroke-linejoin="round">
@@ -335,16 +317,17 @@
                                                 Approve Ticket
                                             </span>
                                         </div>
+
+
                                     </a>
-                                    
 
                                     <!-- REJECT BUTTON -->
                                     <a href="<?= base_url('tickets/status/rejected/' . $ticket['id']) ?>">
 
-                                         <div class="relative group">
-                                            <button 
-                                               class="p-1 bg-[#fef2f2] rounded-md border border-red-500 text-red-500 flex items-center justify-center">
-                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        <div class="relative group">
+                                            <button
+                                                class="p-1 bg-[#fef2f2] rounded-md border border-red-500 text-red-500 flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                     stroke-linecap="round" stroke-linejoin="round">
                                                     <path d="M18 6 6 18" />
