@@ -126,10 +126,10 @@
                     <select name="" id="statusTab"
                         class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 appearance-none text-gray-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors cursor-pointer">
                         <option selected value="">-- Select Status --</option>
-                        <option value="Open">Open</option>
-                        <option value="In Progress">In Progress</option>
+                        <option value="approved">approved</option>
+                        <option value="on going">on going</option>
                         <option value="For Approval">For Approval</option>
-                        <option value="Closed">Closed</option>
+                        <option value="rejected">rejected</option>
                     </select>
                 </div>
 
@@ -208,13 +208,13 @@
                                     <?php if(strtolower($ticket['status']) === 'approved'):?>
                                     <a href="">
                                         <div class="flex justify-center">
-                                            <button class="border border-slate-400">
+                                            <button class="">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-plus-icon lucide-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
                                                 <!-- Assign -->
                                             </button>
                                         </div>
                                     <?php else: ?>
-                                        <div class="flex justify-center border border-slate-500">
+                                        <div class="flex justify-center">
                                             <button>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus-icon lucide-minus"><path d="M5 12h14"/></svg>
                                             </button>
@@ -222,7 +222,6 @@
                                     </a>
                                     <?php endif; ?>
                                 </div>
-                           
                             </td>
 
                             <!-- STATUS BADGE -->
@@ -277,20 +276,20 @@
                                         else
                                             echo '#64748b';
                                         ?>;">
-                                    <span class="priority"><?= htmlspecialchars($ticket['priority']) ?></span>
+                                    <span class="priority"><?= htmlspecialchars(strtolower($ticket['priority'])) ?></span>
                                 </div>
                             </td>
 
                             <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['dept_name'] ?></td>
-                            <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['created_at'] ?></td>
-                            <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['updated_at'] ?></td>
+                            <td class="px-4 py-3 text-sm text-slate-700"><?php echo date('M d, Y - g:i A ', strtotime($ticket['created_at']));?></td>
+                            <td class="px-4 py-3 text-sm text-slate-700"><?php echo date('M d, Y - g:i A',  strtotime($ticket['updated_at'])); ?></td>
 
                             <!-- ACTIONS -->
                             <td class="px-4 py-3 text-sm text-slate-700">
                                 <div class="flex flex-row gap-4 justify-center items-center">
 
                                     <!-- VIEW BUTTON -->
-                                    <a href="<?= base_url('tickets/view/' . $ticket['id']) ?>">
+                                    <a href="<?= base_url('tickets/details/view/' . $ticket['id']) ?>">
                                        <div class="relative group">
                                              <button
                                                 class="p-1 bg-slate-100 rounded-md border border-slate-500 text-slate-500 flex items-center justify-center">

@@ -34,7 +34,7 @@
                                     class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 transition-colors">Dashboard</a>
                             </li>
                             <li>
-                                <a href="<?php echo base_url('tickets/dashboard')?>"
+                                <a href="<?php echo base_url('tickets/all')?>"
                                     class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 transition-colors">Tickets</a>
                             </li>
                             <li>

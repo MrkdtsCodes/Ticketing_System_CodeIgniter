@@ -3,11 +3,12 @@
 class Tickets_Model extends CI_Model
 {
 
-    private function _baseTicketQuery(){
-         $this->db->select("
+    private function _baseTicketQuery()
+    {
+        $this->db->select("
             tickets.id,
-            CONCAT('TCK-', LPAD(tickets.id, 5, '0')) AS ticket_code,
             tickets.title,
+            CONCAT('TCK-', LPAD(tickets.id, 5, '0')) AS ticket_code,
             tickets.body,
             tickets.department_id,
             tickets.priority,
@@ -16,6 +17,7 @@ class Tickets_Model extends CI_Model
             tickets.created_at,
             tickets.updated_at,
             DATEDIFF(NOW(), tickets.created_at) AS Ticket_Age,
+            TIMEDIFF(NOW(), tickets.created_at) AS Ticket_time,
             CONCAT(author_details.firstname, ' ', author_details.lastname) AS author_fullname,
             CONCAT(pic_details.firstname, ' ', pic_details.lastname) AS pic_fullname
         ", FALSE);
@@ -25,18 +27,19 @@ class Tickets_Model extends CI_Model
         $this->db->join('employee_details AS author_details', 'author_account.emp_id = author_details.id', 'left');
         $this->db->join('account AS pic_account', 'tickets.assignee_id = pic_account.id', 'left');
         $this->db->join('employee_details AS pic_details', 'pic_account.emp_id = pic_details.id', 'left');
-        $this->db->join('department AS dept', 'tickets.department_id = dept.id');
-
+        $this->db->join('department AS dept', 'tickets.department_id = dept.id', 'left');
     }
-    // Get departments from the database
+
+
+    // ─── DEPARTMENTS ────────────────────────────────────────────────────────────
+
     public function getDprtmnts()
     {
-        $query = $this->db->get('department');
-        return $query->result_array();
+        return $this->db->get('department')->result_array();
     }
 
 
-
+    // ─── CREATE TICKET ───────────────────────────────────────────────────────────
 
     public function insrtCrtdTicket($filename)
     {
@@ -52,11 +55,7 @@ class Tickets_Model extends CI_Model
             'status'        => 'For Approval',
         ];
 
-        // FIX #2: Removed the unused "$insert =" assignment.
-        // The return value of db->insert() is a boolean and was
-        // never being used anywhere, so storing it was pointless.
         $this->db->insert('tickets', $data);
-
         $ticket_id = $this->db->insert_id();
 
         if (!empty($filename)) {
@@ -68,10 +67,6 @@ class Tickets_Model extends CI_Model
                     'file_type'   => pathinfo($file['origName'], PATHINFO_EXTENSION),
                     'uploaded_at' => date('Y-m-d H:i:s')
                 ];
-
-                // FIX #3: Actually insert the attachment into the database.
-                // Before this fix, $attachment was built but never saved —
-                // so uploaded files were stored on disk but had no DB record.
                 $this->db->insert('ticket_attachments', $attachment);
             }
         }
@@ -87,23 +82,36 @@ class Tickets_Model extends CI_Model
     }
 
 
+    // ─── GET ALL TICKETS ─────────────────────────────────────────────────────────
+
     public function getTickets()
     {
         $this->_baseTicketQuery();
-
-        $query = $this->db->get();
-        return $query->result_array();
+        return $this->db->get()->result_array();
     }
 
+
+    // ─── GET SINGLE TICKET (view/edit page) ──────────────────────────────────────
 
     public function getViewTckts($tcktID)
     {
-     
-       $this->_baseTicketQuery();
-
-        return $this->db->get()->row();
+        $this->_baseTicketQuery();
+        $this->db->where('tickets.id', $tcktID);
+        return $this->db->get()->row_array();
     }
 
+
+    // ─── GET TICKET DETAILS (detail page) ────────────────────────────────────────
+
+    public function getData_for_ticket_details($id)
+    {
+        $this->_baseTicketQuery();
+        $this->db->where('tickets.id', $id);
+        return $this->db->get()->row_array();
+    }
+
+
+    // ─── UPDATE TICKET ───────────────────────────────────────────────────────────
 
     public function getUpdateTckts($tcktID, $fileNames)
     {
@@ -120,7 +128,6 @@ class Tickets_Model extends CI_Model
         $this->db->where('id', $tcktID);
         $this->db->update('tickets', $data);
 
-        // This was already correct — attachment insert was present here.
         if (!empty($fileNames)) {
             foreach ($fileNames as $file) {
                 $attachment = [
@@ -141,46 +148,79 @@ class Tickets_Model extends CI_Model
         }
 
         $ticket_code = 'TCK-' . str_pad($tcktID, 5, '0', STR_PAD_LEFT);
-        return ['status' => TRUE, 'message' => 'Ticket Updated! Code: ' . $ticket_code];
+        return ['status' => TRUE, 'message' => 'Ticket updated! Code: ' . $ticket_code];
     }
 
 
-    //approval page
-      public function getForApprovalTickets()
+    // ─── FOR APPROVAL TICKETS ────────────────────────────────────────────────────
+
+    public function getForApprovalTickets()
     {
         $this->_baseTicketQuery();
-
-        // Only this line is different from getTickets()
         $this->db->where('tickets.status', 'For Approval');
-
-        $query = $this->db->get();
-        return $query->result_array();
+        return $this->db->get()->result_array();
     }
 
-    public function updatedStatus($status, $id)
-    {   
 
-        $sendstatus = [
-            'status' => $status
-        ];
-        
+    // ─── UPDATE STATUS ───────────────────────────────────────────────────────────
+
+    public function updatedStatus($status, $id)
+    {
         $this->db->where('id', $id);
-        $this->db->update('tickets', $sendstatus);
+        $this->db->update('tickets', ['status' => $status]);
     }
 
     public function updatedStatusReject($status, $id)
-    {   
-        
-        $sendstatus = [
-            
-            'status' => $status
-        ];
-        
+    {
         $this->db->where('id', $id);
-        $this->db->update('tickets', $sendstatus);
+        $this->db->update('tickets', ['status' => $status]);
     }
-        
 
 
+    // ─── COMMENTS ────────────────────────────────────────────────────────────────
+
+    public function get_ticket_comments($ticket_id)
+    {
+        $this->db->select("
+            comment.id,
+            comment.comment_body,
+            comment.comment_at,
+            CONCAT(commenter_emp.firstname, ' ', commenter_emp.lastname) AS commenter_fullname
+        ", FALSE);
+
+        $this->db->from('comment');
+        $this->db->join('account AS commenter_acc', 'comment.comment_author_id = commenter_acc.id', 'left');
+        $this->db->join('employee_details AS commenter_emp', 'commenter_acc.emp_id = commenter_emp.id', 'left');
+        $this->db->where('comment.ticket_id', $ticket_id);
+        $this->db->order_by('comment.comment_at', 'ASC');
+
+        return $this->db->get()->result_array();
+    }
+
+    public function insert_comment($ticket_id)
+    {
+        $data = [
+            'ticket_id'         => $ticket_id,
+            'comment_author_id' => $this->session->userdata('user_id'),
+            'comment_body'      => $this->input->post('comment_body'),
+            'comment_at'        => date('Y-m-d H:i:s')
+        ];
+
+        $this->db->insert('comment', $data);
+        return $this->db->affected_rows() > 0;
+    }
+
+
+    // ─── ATTACHMENTS ─────────────────────────────────────────────────────────────
+
+    public function get_ticket_attachments($ticket_id)
+    {
+        $this->db->select('id, file_name, file_path, file_type, uploaded_at');
+        $this->db->from('ticket_attachments');
+        $this->db->where('ticket_id', $ticket_id);
+        $this->db->order_by('uploaded_at', 'DESC');
+
+        return $this->db->get()->result_array();
+    }
 
 }

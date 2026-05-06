@@ -81,6 +81,18 @@ class Pages extends CI_Controller
         }
     }
 
+    //     public function DisplayDtlsVw()
+    // {
+
+    //     if ($this->session->userdata('is_loggedin')) {  
+    //         $this->load->view('pages/navbar');
+    //         $this->load->view('pages/ticket_details');
+    //     } else {
+    //         $this->session->set_flashdata('error', "You must be logged in to access Different page.");
+    //         redirect('login');
+    //     }
+    // }
+
     //------------------------------------TABLE PAGES---------------------------------------------------------------------/
 
 

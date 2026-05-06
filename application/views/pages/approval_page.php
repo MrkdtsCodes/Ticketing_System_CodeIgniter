@@ -78,7 +78,7 @@
                 <div class="flex items-center justify-end gap-2 flex-row flex-wrap">
 
 
-                    <a href="<?php echo base_url('tickets/dashboard') ?>">
+                    <a href="<?php echo base_url('tickets/all') ?>">
                         <div
                             class="px-6 py-2 rounded-md text-sm font-medium bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-500 hover:text-white transition cursor-pointer">
                             All
