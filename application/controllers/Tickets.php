@@ -219,10 +219,15 @@ class Tickets extends CI_Controller
     // ─── ASSIGN EMPLOYEE (INSERT) ─────────────────────────────────────────────────
     public function assignEmployee($ticket_id)
     {
-        $employee_id   = $this->input->post('employee');
-        $department_id = $this->input->post('department_id');
+        $employee_id  = $this->input->post('employeename');
 
-        $this->Tickets_Model->assignEmployee($ticket_id, $employee_id, $department_id);
+        // echo $ticket_id;
+        // print_r($employee_id);
+        // die();
+        // $mark  = (implode(',', $employee_id));
+        // echo $mark;
+        // die();
+        $this->Tickets_Model->assignEmployee($ticket_id, $employee_id);
 
         $this->session->set_flashdata('success', 'Employee assigned successfully.');
         redirect('tickets/details/view/' . $ticket_id);

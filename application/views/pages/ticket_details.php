@@ -368,10 +368,14 @@
                     <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3">
                         Select Employee
                     </p>
-                    <div class="border border-gray-200 rounded-lg text-sm">
-                        <select name="employee" id="reassign-employee-dropdown" class="w-full p-2 rounded-lg">
-                            <option value="" selected>Select Employee (PIC's)</option>
-                        </select>
+                     <div class="border border-gray-200 rounded-lg text-sm">
+                            <!-- <select name="employee" id="assign-employee-dropdown" class="w-full p-2 rounded-lg">
+                                <option value="" selected>Select Employee (PIC's)</option>
+                            </select> -->
+                        <div id="re-assign-employee-dropdown" class="p-2">
+                            <!-- //checkbox is in here -->
+                        </div>
+                        
                     </div>
                 </div>
 
@@ -396,8 +400,10 @@
 
         </div>
     </div>
+
+    <!-- //assign modal -->
     <div id="assignModal" style="display:none;"
-        class="absolute top-1 left-1/2 transform -translate-x-1/2 translate-y-1/2 z-40 w-full max-w-md">
+        class="absolute top-1    left-1/2 transform -translate-x-1/2 translate-y-1/2 z-40 w-full max-w-md">
 
         <div class="bg-white rounded-2xl border border-slate-200">
 
@@ -439,9 +445,13 @@
                         Select Employee
                     </p>
                     <div class="border border-gray-200 rounded-lg text-sm">
-                        <select name="employee" id="assign-employee-dropdown" class="w-full p-2 rounded-lg">
-                            <option value="" selected>Select Employee (PIC's)</option>
-                        </select>
+                            <!-- <select name="employee" id="assign-employee-dropdown" class="w-full p-2 rounded-lg">
+                                <option value="" selected>Select Employee (PIC's)</option>
+                            </select> -->
+                        <div id="assign-employee-dropdown" class="p-2">
+                            <!-- //checkbox is in here -->
+                        </div>
+                        
                     </div>
                 </div>
 

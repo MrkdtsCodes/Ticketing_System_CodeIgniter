@@ -4,7 +4,7 @@ const PRIORITY_COL = 6;
 const table = $('#myTable').DataTable({
     order: [[0, 'asc']],
     responsive: false,
-    stateSave: true,
+
 
     dom: 'Bf t<"bottom"l p i>',
 

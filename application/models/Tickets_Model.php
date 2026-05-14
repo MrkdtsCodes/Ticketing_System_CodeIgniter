@@ -243,6 +243,7 @@ class Tickets_Model extends CI_Model
     public function getEmployee($dept_id)
     {
         $this->db->select("
+       account.id As account_id,
         CONCAT(employee_details.firstname, ' ' ,employee_details.lastname) AS employee_fullname,
         department.dept_name,
         department.id,
@@ -261,6 +262,7 @@ class Tickets_Model extends CI_Model
     public function getEmployeeForMDL($dept_id){
 
         $this->db->select("
+        account.id As account_id,
         CONCAT(employee_details.firstname, ' ' ,employee_details.lastname) AS employee_fullname,
         department.dept_name,
         department.id,
@@ -276,13 +278,21 @@ class Tickets_Model extends CI_Model
     }
 
     // ─── ASSIGN EMPLOYEE (INSERT) ─────────────────────────────────────────────────
-    public function assignEmployee($ticket_id, $employee_id, $department_id)
+    public function assignEmployee($ticket_id, $employee_id)
     {
-        $data = [
-            'ticket_id'   => $ticket_id,
-            'assigned_to' => $employee_id,
-        ];
-        $this->db->insert('ticket_assigned', $data);
+
+        $author_id = $this->session->userdata('user_id');
+
+        foreach($employee_id as $empID){
+            $data = [
+                'ticket_id'   => $ticket_id,
+                'assigned_by' =>  $author_id, 
+                'assigned_to' => $empID,
+            ];
+
+            $this->db->insert('ticket_assigned', $data);
+        }
+        
     }
 
     // ─── REASSIGN EMPLOYEE (UPDATE) ───────────────────────────────────────────────
