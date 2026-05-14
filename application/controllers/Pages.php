@@ -102,7 +102,7 @@ class Pages extends CI_Controller
             $data['crtdTickets'] = $this->Tickets_Model->getForApprovalTickets();
   
             $this->load->view('pages/navbar');
-            $this->load->view('pages/approval_page' , $data);
+            $this->load->view('pages/approval_page');
         } else {
             $this->session->set_flashdata('error', "You must be logged in to access Different page.");
             redirect('login');

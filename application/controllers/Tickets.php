@@ -28,22 +28,22 @@ class Tickets extends CI_Controller
         $this->load->library('upload');
 
         for ($i = 0; $i < $count; $i++) {
-            $_FILES['file']['name']     = $files_uploaded['name'][$i];
-            $_FILES['file']['type']     = $files_uploaded['type'][$i];
+            $_FILES['file']['name'] = $files_uploaded['name'][$i];
+            $_FILES['file']['type'] = $files_uploaded['type'][$i];
             $_FILES['file']['tmp_name'] = $files_uploaded['tmp_name'][$i];
-            $_FILES['file']['error']    = $files_uploaded['error'][$i];
-            $_FILES['file']['size']     = $files_uploaded['size'][$i];
+            $_FILES['file']['error'] = $files_uploaded['error'][$i];
+            $_FILES['file']['size'] = $files_uploaded['size'][$i];
 
-            $config['upload_path']   = './assets/images/ticket_attachments';
+            $config['upload_path'] = './assets/images/ticket_attachments';
             $config['allowed_types'] = 'gif|jpg|png|jpeg|docx|ppt|pptx|zip|rar|pdf';
-            $config['encrypt_name']  = TRUE;
+            $config['encrypt_name'] = TRUE;
 
             $this->upload->initialize($config);
 
             if ($this->upload->do_upload('file')) {
-                $uploadData  = $this->upload->data();
+                $uploadData = $this->upload->data();
                 $fileNames[] = [
-                    'origName'      => $uploadData['orig_name'],
+                    'origName' => $uploadData['orig_name'],
                     'encryptedName' => $uploadData['file_name']
                 ];
             } else {
@@ -65,13 +65,13 @@ class Tickets extends CI_Controller
 
         if ($this->form_validation->run()) {
             $fileNames = $this->_handleFileUploads();
-            $result    = $this->Tickets_Model->insrtCrtdTicket($fileNames);
+            $result = $this->Tickets_Model->insrtCrtdTicket($fileNames);
 
             if ($result['status'] === TRUE) {
                 $this->session->set_flashdata('success', $result['message']);
                 redirect('tickets/send');
             } else {
-                $data['error']       = $result['message'];
+                $data['error'] = $result['message'];
                 $data['departments'] = $this->Tickets_Model->getDprtmnts();
                 $this->load->view('pages/navbar', $data);
                 $this->load->view('pages/create_tickets', $data);
@@ -89,7 +89,7 @@ class Tickets extends CI_Controller
     public function Viewtckts($tcktID)
     {
         $data['tckt_details'] = $this->Tickets_Model->getViewTckts($tcktID);
-        $data['departments']  = $this->Tickets_Model->getDprtmnts();
+        $data['departments'] = $this->Tickets_Model->getDprtmnts();
         $this->load->view('pages/navbar');
         $this->load->view('pages/view_tickets', $data);
     }
@@ -106,21 +106,21 @@ class Tickets extends CI_Controller
 
         if ($this->form_validation->run()) {
             $fileNames = $this->_handleFileUploads();
-            $result    = $this->Tickets_Model->getUpdateTckts($tcktID, $fileNames);
+            $result = $this->Tickets_Model->getUpdateTckts($tcktID, $fileNames);
 
             if ($result['status'] === TRUE) {
                 $this->session->set_flashdata('success', $result['message']);
                 redirect('tickets/view/' . $tcktID);
             } else {
                 $data['tckt_details'] = $this->Tickets_Model->getViewTckts($tcktID);
-                $data['error']        = $result['message'];
-                $data['departments']  = $this->Tickets_Model->getDprtmnts();
+                $data['error'] = $result['message'];
+                $data['departments'] = $this->Tickets_Model->getDprtmnts();
                 $this->load->view('pages/navbar', $data);
                 $this->load->view('pages/view_tickets', $data);
             }
         } else {
             $data['tckt_details'] = $this->Tickets_Model->getViewTckts($tcktID);
-            $data['departments']  = $this->Tickets_Model->getDprtmnts();
+            $data['departments'] = $this->Tickets_Model->getDprtmnts();
             $this->load->view('pages/navbar');
             $this->load->view('pages/view_tickets', $data);
         }
@@ -128,16 +128,21 @@ class Tickets extends CI_Controller
 
 
     // ─── UPDATE STATUS ───────────────────────────────────────────────────────────
-
     public function updateStatus($status, $id)
     {
-        $this->Tickets_Model->updatedStatus($status, $id);
+        //get the id and approved
+        $priority = $this->input->post('modal_priority');
+        $this->Tickets_Model->updateStatus($status, $id, $priority);
+
+        //get post request from radio button
+        //show sucess 
         $this->session->set_flashdata('success', 'Ticket status updated to ' . $status . '.');
         redirect('tickets/all');
     }
 
     public function updateStatusReject($status, $id)
     {
+
         $this->Tickets_Model->updatedStatusReject($status, $id);
         $this->session->set_flashdata('success', 'Ticket has been rejected.');
         redirect('tickets/all');
@@ -146,15 +151,48 @@ class Tickets extends CI_Controller
 
     // ─── TICKET DETAILS PAGE ─────────────────────────────────────────────────────
 
+
+
     public function returnticketDetails($id)
     {
         $data['tckt_details'] = $this->Tickets_Model->getData_for_ticket_details($id);
-        $data['departments']  = $this->Tickets_Model->getDprtmnts();
-        $data['comments']     = $this->Tickets_Model->get_ticket_comments($id);
-        $data['attachments']  = $this->Tickets_Model->get_ticket_attachments($id);
+        $dept_id = $data['tckt_details']['department_id'];
+        // dept_id = 3
+        //ito yung ni return ng database natin
+        //ito laman niyan
+        //     tckt_details = [
+        //     'id' => 10,
+        //     'title' => 'Fix login bug',
+        //     'department_id' => 3,
+        //     'status' => 'open'
+        // ]
+
+        $data['departments'] = $this->Tickets_Model->getDprtmnts();
+        $data['comments'] = $this->Tickets_Model->get_ticket_comments($id);
+        $data['attachments'] = $this->Tickets_Model->get_ticket_attachments($id);
+
+        // FIXED
+        $data['employees'] = $this->Tickets_Model->getEmployee($dept_id);
+        
+
         $this->load->view('pages/navbar');
         $this->load->view('pages/ticket_details', $data);
     }
+
+    //ajax that loads the  dropdown input
+    public function getEmployees($dept_id)
+    {
+        $data['employees'] = $this->Tickets_Model->getEmployee($dept_id);
+        $this->load->view('pages/navbar');
+        $this->load->view('pages/ticket_details', $data);
+    }
+
+    public function getEmployeesForModal($dept_id){
+
+        $data = $this->Tickets_Model->getEmployeeForMDL($dept_id);
+        echo json_encode($data);
+    }
+
 
 
     // ─── POST COMMENT ─────────────────────────────────────────────────────────────
@@ -175,6 +213,29 @@ class Tickets extends CI_Controller
             $this->session->set_flashdata('error', validation_errors());
         }
 
+        redirect('tickets/details/view/' . $ticket_id);
+    }
+
+    // ─── ASSIGN EMPLOYEE (INSERT) ─────────────────────────────────────────────────
+    public function assignEmployee($ticket_id)
+    {
+        $employee_id   = $this->input->post('employee');
+        $department_id = $this->input->post('department_id');
+
+        $this->Tickets_Model->assignEmployee($ticket_id, $employee_id, $department_id);
+
+        $this->session->set_flashdata('success', 'Employee assigned successfully.');
+        redirect('tickets/details/view/' . $ticket_id);
+    }
+
+    // ─── REASSIGN EMPLOYEE (UPDATE) ───────────────────────────────────────────────
+    public function reassignEmployee($ticket_id)
+    {
+        $employee_id = $this->input->post('employee');
+
+        $this->Tickets_Model->reassignEmployee($ticket_id, $employee_id);
+
+        $this->session->set_flashdata('success', 'Employee re-assigned successfully.');
         redirect('tickets/details/view/' . $ticket_id);
     }
 

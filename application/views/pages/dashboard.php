@@ -27,12 +27,13 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-slate-50 p-5">
+<body class=" bg-slate-50 p-5">
 
-    <main class="pt-20 px-4 min-h-screen">
+    <main class="relative pt-20 px-4 min-h-screen relative">
+        
 
-        <div class="p-8 mx-auto bg-white rounded-2xl shadow-sm border border-slate-200">
-
+        <!-- blur -->
+        <div id="tabledata" class="p-8 mx-auto bg-white rounded-2xl shadow-sm border border-slate-200">
             <!-- TOP BAR -->
             <div class="mb-4 flex w-full flex-row-reverse justify-between items-center gap-4 bg-white rounded-lg">
 
@@ -40,7 +41,7 @@
                 <div class="dt-search-wrapper flex items-center gap-3 flex-row">
 
                     <!-- FILTER ICON -->
-                   <div class="relative group order-1 ">
+                    <div class="relative group order-1 ">
                         <div id="filterbtn"
                             class="filterbtn flex items-center justify-center text-white bg-blue-500 p-3 rounded-lg cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
@@ -77,7 +78,7 @@
                 <!-- RIGHT SIDE: NAV TABS -->
                 <div class="flex items-center justify-end gap-2 flex-row flex-wrap">
 
-                    <div    
+                    <div
                         class="px-6 py-2 rounded-md text-sm font-medium bg-slate-500 border border-slate-200 text-white hover:bg-slate-500 hover:text-white transition cursor-pointer">
                         All
                     </div>
@@ -196,31 +197,33 @@
                         <tr class="bg-white hover:bg-slate-50 transition border border-slate-100 rounded-lg">
                             <td class="px-4 py-3 text-sm text-slate-700">
                                 <div class=" flex justify-center ">
-                                   <?= $ticket['Ticket_Age'] ?>
+                                    <?= $ticket['Ticket_Age'] ?>
                                 </div>
                             </td>
                             <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['ticket_code'] ?></td>
                             <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['title'] ?></td>
                             <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['author_fullname'] ?></td>
                             <!-- <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['pic_fullname'] ?></td> -->
+
+                            <!-- PIC's  column -->
                             <td class="px-4 py-3 text-sm text-slate-700">
                                 <div class="flex flex-col">
-                                    <?php if(strtolower($ticket['status']) === 'approved'):?>
-                                    <a href="">
-                                        <div class="flex justify-center">
-                                            <button class="">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-plus-icon lucide-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-                                                <!-- Assign -->
-                                            </button>
-                                        </div>
-                                    <?php else: ?>
-                                        <div class="flex justify-center">
-                                            <button>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus-icon lucide-minus"><path d="M5 12h14"/></svg>
-                                            </button>
-                                        </div>
-                                    </a>
-                                    <?php endif; ?>
+                                    
+                                    <?php 
+                                    $pics = explode(', ', $ticket['assigned_employees']);
+                                    $pic_count = count($pics);
+
+                                    
+                                    if($pic_count === 0){
+                                        echo "not assigned";
+                                    }elseif ($pic_count === 1){
+                                        echo $ticket['assigned_employees'];
+                                    }elseif ($pic_count > 1){
+                                        echo '2 assigned';
+                                    };
+                                    ?>
+                                   
+                                        
                                 </div>
                             </td>
 
@@ -229,7 +232,8 @@
                                 <div style="color:<?php
                                 if ($s === 'approved')
                                     echo '#4ade80';
-                                elseif ($s === 'on going') echo '#3d76fb';
+                                elseif ($s === 'on going')
+                                    echo '#3d76fb';
                                 // elseif ($s === 'for approval') echo '#94a3b8';
                                 elseif ($s === 'rejected')
                                     echo '#ef4444';
@@ -281,15 +285,17 @@
                             </td>
 
                             <td class="px-4 py-3 text-sm text-slate-700"><?= $ticket['dept_name'] ?></td>
-                            <td class="px-4 py-3 text-sm text-slate-700"><?php echo date('M d, Y - g:i A ', strtotime($ticket['created_at']));?></td>
-                            <td class="px-4 py-3 text-sm text-slate-700"><?php echo date('M d, Y - g:i A',  strtotime($ticket['updated_at'])); ?></td>
+                            <td class="px-4 py-3 text-sm text-slate-700">
+                                <?php echo date('M d, Y - g:i A ', strtotime($ticket['created_at'])); ?></td>
+                            <td class="px-4 py-3 text-sm text-slate-700">
+                                <?php echo date('M d, Y - g:i A', strtotime($ticket['updated_at'])); ?></td>
 
                             <!-- ACTIONS -->
                             <td class="px-4 py-3 text-sm text-slate-700">
+                                
                                 <div class="flex flex-row gap-4 justify-center items-center">
 
-                                    <!-- VIEW BUTTON -->
-                                    <a href="<?= base_url('tickets/details/view/' . $ticket['id']) ?>">
+                                   <a href="<?= base_url('tickets/details/view/' . $ticket['id']) ?>">
                                        <div class="relative group">
                                              <button
                                                 class="p-1 bg-slate-100 rounded-md border border-slate-500 text-slate-500 flex items-center justify-center">
@@ -314,13 +320,19 @@
                                        </div>
                                     </a>
 
-                                    
-                              
-                                    <!-- APPROVE BUTTON -->
-                                    <a href="<?= base_url('tickets/status/approved/' . $ticket['id']) ?>">
+
+
+                                    <!-- APPROVE BUTTON-->
                                         <div class="relative group">
                                             <button 
-                                                class=" p-1 bg-[#f0fdf4] rounded-md border border-green-500 text-green-500 flex items-center justify-center" aria-label="Approve Ticket">
+                                                class="approveButton p-1 bg-[#f0fdf4] rounded-md border border-green-500 text-green-500 flex items-center justify-center"
+                                                aria-label="Approve Ticket"
+                                                data-id="<?= $ticket['id'] ?>"
+                                                data-title="<?= $ticket['title'] ?>"
+                                                data-code="<?= $ticket['ticket_code'] ?>"
+                                                data-author="<?= $ticket['author_fullname'] ?>"
+                                                >
+
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                     stroke-linecap="round" stroke-linejoin="round">
@@ -334,16 +346,16 @@
                                                 Approve Ticket
                                             </span>
                                         </div>
-                                    </a>
-                                    
+                                     </a> 
+
 
                                     <!-- REJECT BUTTON -->
                                     <a href="<?= base_url('tickets/status/rejected/' . $ticket['id']) ?>">
 
-                                         <div class="relative group">
-                                            <button 
-                                               class="p-1 bg-[#fef2f2] rounded-md border border-red-500 text-red-500 flex items-center justify-center">
-                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        <div class="relative group">
+                                            <button
+                                                class="p-1 bg-[#fef2f2] rounded-md border border-red-500 text-red-500 flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                     stroke-linecap="round" stroke-linejoin="round">
                                                     <path d="M18 6 6 18" />
@@ -357,8 +369,8 @@
                                                 Reject Ticket
                                             </span>
                                         </div>
-                                    </a>
-                                </div>
+                                    </a> 
+                                </div> 
                             </td>
 
                         </tr>
@@ -369,6 +381,143 @@
 
         </div>
     </main>
+
+
+    <div id="approveModal" style="display:none;"
+        class="absolute top-1 left-1/2 transform -translate-x-1/2 translate-y-1/2 z-40 w-full max-w-md">
+
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+
+            <!-- ── HEADER ── -->
+            <div class="px-5 py-4 border-b border-slate-100 flex items-start justify-between gap-3">
+                <div>
+                    <p class="text-xs text-slate-400 mb-1">You are about to approve</p>
+                    <!-- <h3 id="modal-title" class="text-sm font-semibold text-slate-800 leading-snug"></h3> -->
+                    <div class="flex items-center gap-2 mt-2">
+                        <span id="modal-code"
+                            class="inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full">
+                        </span>
+                        <span id="modal-author" class="text-xs text-slate-400">
+                           
+                        </span>
+                    </div>
+                </div>
+                <button
+                    id="backbutton"
+                    class="shrink-0 w-7 h-7 flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- ── BODY ── -->
+            <form id="approveForm" method="POST">
+                    <div class="px-5 py-4">
+
+                        <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                            Set priority before approving
+                        </p>
+
+                        <!-- Priority options -->
+                        <div class="flex flex-col gap-2" id="priorityOptions">
+
+                            <!-- LOW -->
+                            <label id="lbl-low"
+                                class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer transition-all hover:border-green-300 hover:bg-green-50">
+                                <input type="radio" name="modal_priority" value="low" class="w-4 h-4 accent-green-600"
+                                    onchange="selectPriority('low')">
+                                <span class="w-2 h-2 rounded-full bg-green-600 shrink-0"></span>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-slate-700">Low</p>
+                                    <p class="text-xs text-slate-400">Not urgent, can be handled when time permits</p>
+                                </div>
+                                <span
+                                    class="text-xs font-medium bg-green-50 text-green-700 border border-green-200 px-2.5 py-0.5 rounded-full">
+                                    low
+                                </span>
+                            </label>
+
+                            <!-- MEDIUM -->
+                            <label id="lbl-medium"
+                                class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer transition-all hover:border-amber-300 hover:bg-amber-50">
+                                <input type="radio" name="modal_priority" value="medium" class="w-4 h-4 accent-amber-600"
+                                    onchange="selectPriority('medium')">
+                                <span class="w-2 h-2 rounded-full bg-amber-600 shrink-0"></span>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-slate-700">Medium</p>
+                                    <p class="text-xs text-slate-400">Needs attention soon, moderate impact</p>
+                                </div>
+                                <span
+                                    class="text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-0.5 rounded-full">
+                                    medium
+                                </span>
+                            </label>
+
+                            <!-- HIGH -->
+                            <label id="lbl-high"
+                                class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer transition-all hover:border-red-300 hover:bg-red-50">
+                                <input type="radio" name="modal_priority" value="high" class="w-4 h-4 accent-red-600"
+                                    onchange="selectPriority('high')">
+                                <span class="w-2 h-2 rounded-full bg-red-600 shrink-0"></span>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-slate-700">High</p>
+                                    <p class="text-xs text-slate-400">Urgent, must be resolved immediately</p>
+                                </div>
+                                <span
+                                    class="text-xs font-medium bg-red-50 text-red-700 border border-red-200 px-2.5 py-0.5 rounded-full">
+                                    high
+                                </span>
+                            </label>
+
+                        </div>
+
+                                <!-- Warning note -->
+                        <div class="mt-3 flex gap-2 items-start p-3 bg-amber-50 border border-amber-200 rounded-xl">
+                            <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                            </svg>
+                            <p class="text-xs text-amber-700 leading-relaxed">
+                                Priority cannot be changed after approval. Please review the ticket carefully before confirming.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- ── FOOTER ── -->
+                    <div class="px-5 py-3 border-t border-slate-100 flex justify-end gap-2">
+
+                        <button  type="button"
+                            class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition">
+                            Cancel
+                        </button>
+
+                        <!-- Confirm button — disabled until priority is picked -->
+                        <!-- <button type="button"
+                            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-lg transition pointer-events-none opacity-40"
+                            style="background-color: #15803d;">
+                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Approve &amp; Set Priority
+                        </button> -->
+                        <button type="submit">
+                            submit
+                        </button>
+
+                    </div>
+            </form>
+
+                
+
+        </div>
+    </div>
 
     <script>
         const STATUS_COL = 5;
@@ -457,6 +606,51 @@
         });
     </script>
 
+   
+
 </body>
+
+ <script>
+        const approveModal = document.getElementById('approveModal'); //yung form
+        const tabledata = document.getElementById('tabledata');  //data table
+        const approveButton = document.querySelectorAll('.approveButton');
+
+        const back_button = document.getElementById('backbutton');
+
+        
+
+        
+
+
+        approveButton.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const styling =  approveModal.style.display;
+                
+
+                if(styling === "none"){
+                    const title    = this.getAttribute('data-title');
+                    const tckt_code  = this.getAttribute('data-code');
+                    const tckt_author = this.getAttribute('data-author');
+                    const ticketId = this.getAttribute('data-id');
+
+                // put into the modal
+                    // document.getElementById('modal-title').textContent    = title;
+                    document.getElementById('modal-code').textContent  = tckt_code;
+                    document.getElementById('modal-author').textContent = tckt_author;
+                    document.getElementById('approveForm').action =
+                      "<?= base_url('tickets/status/approved/') ?>" + ticketId;
+                    approveModal.style.display = "block";
+                    tabledata.classList.add('blur-sm');
+                }
+            });
+        });
+
+        back_button.addEventListener('click', function(){
+            approveModal.style.display = "none";
+            tabledata.classList.remove('blur-sm');
+        });
+
+
+    </script>
 
 </html>

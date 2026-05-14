@@ -30,11 +30,19 @@ $route['tickets/update/(:any)'] = 'Tickets/UpdateTckts/$1';
 // ─── TICKET DETAILS PAGE ─────────────────────────────────────────────────────
 $route['tickets/details/view/(:any)'] = 'Tickets/returnticketDetails/$1';
 
+$route['tickets/Reassign/getemployees/(:num)'] = 'Tickets/getEmployeesForModal/$1';
+
+// ─── ASSIGN / REASSIGN EMPLOYEE ──────────────────────────────────────────────
+$route['tickets/assign/(:num)']   = 'Tickets/assignEmployee/$1';
+$route['tickets/reassign/(:num)'] = 'Tickets/reassignEmployee/$1';
+
 // ─── COMMENTS ────────────────────────────────────────────────────────────────
 $route['tickets/comment/(:any)'] = 'Tickets/postComment/$1';
 
 // ─── STATUS ──────────────────────────────────────────────────────────────────
-$route['tickets/status/(:any)/(:any)'] = 'Tickets/updateStatus/$1/$2';
+
+$route['tickets/status/(:any)/(:num)'] = 'Tickets/updateStatus/$1/$2';
+// $route['tickets/status/(:any)'] = 'Tickets/updateStatus/$1';
 
 // ─── APPROVAL PAGE ───────────────────────────────────────────────────────────
 $route['tickets/approval'] = 'Pages/displayApprvlPgs';

@@ -39,7 +39,7 @@ const table = $('#myTable').DataTable({
 $('.dt-search-wrapper').append($('.dt-search input'));
 
 
-// ✅ Export buttons
+
 $('#exportExcelBtn').on('click', function () {
     table.button('.buttons-excel').trigger();
 });

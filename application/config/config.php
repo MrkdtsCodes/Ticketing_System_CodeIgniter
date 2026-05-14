@@ -531,5 +531,5 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-//
+//This makes PHP use Manila time when you call date() or NOW() anywhere in your app.
 date_default_timezone_set('Asia/Manila');

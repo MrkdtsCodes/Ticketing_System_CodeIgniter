@@ -4,31 +4,39 @@ class Tickets_Model extends CI_Model
 {
 
     private function _baseTicketQuery()
-    {
-        $this->db->select("
-            tickets.id,
-            tickets.title,
-            CONCAT('TCK-', LPAD(tickets.id, 5, '0')) AS ticket_code,
-            tickets.body,
-            tickets.department_id,
-            tickets.priority,
-            tickets.status,
-            dept.dept_name,
-            tickets.created_at,
-            tickets.updated_at,
-            DATEDIFF(NOW(), tickets.created_at) AS Ticket_Age,
-            TIMEDIFF(NOW(), tickets.created_at) AS Ticket_time,
-            CONCAT(author_details.firstname, ' ', author_details.lastname) AS author_fullname,
-            CONCAT(pic_details.firstname, ' ', pic_details.lastname) AS pic_fullname
-        ", FALSE);
+{
+    $this->db->select("
+        tickets.id,
+        CONCAT('TCK-', LPAD(tickets.id, 5, '0')) AS ticket_code,
+        tickets.department_id,
+        tickets.title,
+        tickets.body,
+        tickets.priority,
+        tickets.status,
+        tickets.created_at,
+        tickets.updated_at,
+        department.dept_name,
+        DATEDIFF(NOW(), tickets.created_at) AS Ticket_Age,
+        TIMEDIFF(NOW(), tickets.created_at) AS Ticket_time,
+        CONCAT(author_details.firstname, ' ', author_details.lastname) AS author_fullname,
+        GROUP_CONCAT(assignee_details.firstname, ' ', assignee_details.lastname SEPARATOR ', ') AS assigned_employees
+    ", FALSE);
 
-        $this->db->from('tickets');
-        $this->db->join('account AS author_account', 'tickets.author_id = author_account.id', 'left');
-        $this->db->join('employee_details AS author_details', 'author_account.emp_id = author_details.id', 'left');
-        $this->db->join('account AS pic_account', 'tickets.assignee_id = pic_account.id', 'left');
-        $this->db->join('employee_details AS pic_details', 'pic_account.emp_id = pic_details.id', 'left');
-        $this->db->join('department AS dept', 'tickets.department_id = dept.id', 'left');
-    }
+    $this->db->from('tickets');
+
+    // Author chain
+    $this->db->join('account AS author_account', 'tickets.author_id = author_account.id', 'left');
+    $this->db->join('employee_details AS author_details', 'author_account.emp_id = author_details.id', 'left');
+
+    // Assignee chain
+    $this->db->join('ticket_assigned', 'tickets.id = ticket_assigned.ticket_id', 'left');
+    $this->db->join('account AS assignee_account', 'ticket_assigned.assigned_to = assignee_account.id', 'left');
+    $this->db->join('employee_details AS assignee_details', 'assignee_account.emp_id = assignee_details.id', 'left');
+
+    // Department
+    $this->db->join('department', 'author_account.dept_id = department.id', 'left');
+    $this->db->group_by('tickets.id');
+}
 
 
     // ─── DEPARTMENTS ────────────────────────────────────────────────────────────
@@ -36,6 +44,7 @@ class Tickets_Model extends CI_Model
     public function getDprtmnts()
     {
         return $this->db->get('department')->result_array();
+
     }
 
 
@@ -164,10 +173,16 @@ class Tickets_Model extends CI_Model
 
     // ─── UPDATE STATUS ───────────────────────────────────────────────────────────
 
-    public function updatedStatus($status, $id)
-    {
+    public function updateStatus($status, $id, $priority)
+    {   
+         $data = [
+            'priority' => $priority,
+            'status' => $status,
+        ];
+
+        
         $this->db->where('id', $id);
-        $this->db->update('tickets', ['status' => $status]);
+        $this->db->update('tickets', $data);
     }
 
     public function updatedStatusReject($status, $id)
@@ -223,4 +238,59 @@ class Tickets_Model extends CI_Model
         return $this->db->get()->result_array();
     }
 
-}
+        // ─── get employee ─────────────────────────────────────────────────────────────
+
+    public function getEmployee($dept_id)
+    {
+        $this->db->select("
+        CONCAT(employee_details.firstname, ' ' ,employee_details.lastname) AS employee_fullname,
+        department.dept_name,
+        department.id,
+        employee_details.id AS employee_id
+        ",
+        FALSE);
+
+        $this->db->from('account');
+        $this->db->join('employee_details', 'account.emp_id = employee_details.id', 'left');
+        $this->db->join('department', 'account.dept_id = department.id', 'left');
+        $this->db->where('account.dept_id', $dept_id);
+        return $this->db->get()->result_array();
+    }
+
+
+    public function getEmployeeForMDL($dept_id){
+
+        $this->db->select("
+        CONCAT(employee_details.firstname, ' ' ,employee_details.lastname) AS employee_fullname,
+        department.dept_name,
+        department.id,
+        employee_details.id AS employee_id
+        ",
+        FALSE);
+
+        $this->db->from('account');
+        $this->db->join('employee_details', 'account.emp_id = employee_details.id', 'left');
+        $this->db->join('department', 'account.dept_id = department.id', 'left');
+        $this->db->where('account.dept_id', $dept_id);
+        return $this->db->get()->result_array();
+    }
+
+    // ─── ASSIGN EMPLOYEE (INSERT) ─────────────────────────────────────────────────
+    public function assignEmployee($ticket_id, $employee_id, $department_id)
+    {
+        $data = [
+            'ticket_id'   => $ticket_id,
+            'assigned_to' => $employee_id,
+        ];
+        $this->db->insert('ticket_assigned', $data);
+    }
+
+    // ─── REASSIGN EMPLOYEE (UPDATE) ───────────────────────────────────────────────
+    public function reassignEmployee($ticket_id, $employee_id)
+    {
+        $data = ['assigned_to' => $employee_id];
+        $this->db->where('ticket_id', $ticket_id);
+        $this->db->update('ticket_assigned', $data);
+    }
+
+} 
