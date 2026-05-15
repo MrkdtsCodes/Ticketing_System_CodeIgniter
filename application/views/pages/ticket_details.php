@@ -375,6 +375,7 @@
                         <i class="ti ti-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none"></i>
                     </div>
                 </div>
+                
 
                 <!-- <div class="px-5 py-4">
                     <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3">
@@ -411,6 +412,8 @@
     <!-- //assign modal -->
     <div id="assignModal" style="display:none;"
         class="absolute top-1    left-1/2 transform -translate-x-1/2 translate-y-1/2 z-40 w-full max-w-md">
+
+        
 
         <div class="bg-white rounded-2xl border border-slate-200">
 
@@ -535,7 +538,7 @@
         // ── Assign Modal ──
         _assignEmpBtn.addEventListener('click', function () {
             const ticket_id = this.getAttribute('data-ticketid'); 
-            // FIXED: Set the form action dynamically so submission handles the correct record
+            
             document.getElementById('assignForm').action = BASE_URL + 'tickets/assign/' + ticket_id; 
             
             document.getElementById('assign-modal-code').textContent     = this.getAttribute('data-tcktCode');

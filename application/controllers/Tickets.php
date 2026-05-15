@@ -199,6 +199,7 @@ class Tickets extends CI_Controller
         echo json_encode($data);
     }
 
+
     // ─── POST COMMENT ─────────────────────────────────────────────────────────────
 
     public function postComment($ticket_id)
@@ -239,9 +240,12 @@ class Tickets extends CI_Controller
     // ─── REASSIGN EMPLOYEE (UPDATE) ───────────────────────────────────────────────
     public function reassignEmployee($ticket_id)
     {
-        $employee_id = $this->input->post('employee');
 
-        $this->Tickets_Model->reassignEmployee($ticket_id, $employee_id);
+        $departmentID = $this->input->post('department');
+
+
+        $this->Tickets_Model->reassignEmployee($ticket_id, $departmentID);
+
 
         $this->session->set_flashdata('success', 'Employee re-assigned successfully.');
         redirect('tickets/details/view/' . $ticket_id);

@@ -61,7 +61,7 @@ class Tickets_Model extends CI_Model
             'department_id' => $this->input->post('departments'),
             'title'         => $this->input->post('ticket_title'),
             'body'          => $this->input->post('ticket_body'),
-            'status'        => 'For Approval',
+            'status'        => 'For Approval',      
         ];
 
         $this->db->insert('tickets', $data);
@@ -185,8 +185,6 @@ class Tickets_Model extends CI_Model
         $this->db->update('tickets', $data);
     }
 
-    
-
     public function updatedStatusReject($status, $id, $priority)
     {   
          $data = [
@@ -252,7 +250,7 @@ class Tickets_Model extends CI_Model
     public function getEmployee($dept_id)
     {
         $this->db->select("
-       account.id As account_id,
+        account.id As account_id,
         CONCAT(employee_details.firstname, ' ' ,employee_details.lastname) AS employee_fullname,
         department.dept_name,
         department.id,
@@ -305,11 +303,32 @@ class Tickets_Model extends CI_Model
     }
 
     // ─── REASSIGN EMPLOYEE (UPDATE) ───────────────────────────────────────────────
-    public function reassignEmployee($ticket_id, $employee_id)
+    public function reassignEmployee($ticket_id, $departmentID)
     {
-        $data = ['assigned_to' => $employee_id];
+        // $data = ['assigned_to' => $employee_id];
+        // $this->db->where('ticket_id', $ticket_id);
+        // $this->db->update('ticket_assigned', $data);
+
+
+        $this->db->trans_start();
+
+         $data = [
+           "department_id" => $departmentID,
+           'priority' => null ,
+           'status' => "For Approval "
+        ];
+
+        $this->db->where('id', $ticket_id);
+        $this->db->update('tickets', $data);
+
+
         $this->db->where('ticket_id', $ticket_id);
-        $this->db->update('ticket_assigned', $data);
+        $this->db->delete('ticket_assigned');
+
+        $this->db->trans_complete();
+       
     }
+
+
 
 } 
