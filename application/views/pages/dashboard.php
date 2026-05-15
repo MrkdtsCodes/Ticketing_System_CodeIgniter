@@ -25,7 +25,42 @@
     <script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-2.3.8/b-3.2.6/b-html5-3.2.6/datatables.min.js"
         integrity="sha384-EeU0n4QZjxAoReXoJNbWIsbYCFLxs2/K2hduD34zPKu6IIhf91rgg8v/AR12rnk0"
         crossorigin="anonymous"></script>
+
+        <style>
+            .dd-wrap { position: relative; display: inline-block; }
+            .dd-trigger {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 12px; font-size: 13px; font-weight: 500;
+            background: white; border: 1px solid #e2e8f0;
+            border-radius: 8px; color: #334155; cursor: pointer;
+            }
+            .dd-trigger:hover { background: #f8fafc; }
+            .dd-menu {
+            position: absolute; right: 0; top: calc(100% + 6px);
+            min-width: 160px; z-index: 99;
+            background: white; border: 1px solid #e2e8f0;
+            border-radius: 8px; overflow: hidden; display: none;
+            }
+            .dd-menu.open { display: block; }
+            .dd-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 14px; font-size: 13px;
+            color: #334155; cursor: pointer;
+            border: none; background: none; width: 100%; text-align: left;
+            }
+            .dd-item:hover { background: #f8fafc; }
+            .dd-item i { font-size: 16px; }
+            .dd-item.view i    { color: #64748b; }
+            .dd-item.approve i { color: #16a34a; }
+            .dd-item.reject i  { color: #dc2626; }
+            .dd-divider { height: 1px; background: #f1f5f9; margin: 4px 0; }
+        </style>
+
+<!-- Tabler icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 </head>
+
+
 
 <body class=" bg-slate-50 p-5">
 
@@ -280,7 +315,9 @@
                                         else
                                             echo '#64748b';
                                         ?>;">
-                                    <span class="priority"><?= htmlspecialchars(strtolower($ticket['priority'])) ?></span>
+                                    <span class="priority">
+                                        <?= htmlspecialchars(strtolower($ticket['priority'])) ?>
+                                    </span>
                                 </div>
                             </td>
 
@@ -292,6 +329,36 @@
 
                             <!-- ACTIONS -->
                             <td class="px-4 py-3 text-sm text-slate-700">
+                                <?php $s = strtolower(trim($ticket['status'])); ?>
+                                <div class="dd-wrap">
+                                    <button class="dd-trigger" type="button">
+                                        Actions <i class="ti ti-chevron-down"></i>
+                                    </button>
+                                    <div class="dd-menu">
+                                        <a href="<?= base_url('tickets/details/view/' . $ticket['id']) ?>">
+                                            <button class="dd-item view" type="button">
+                                                <i class="ti ti-eye" aria-hidden="true"></i> View ticket
+                                            </button>
+                                        </a>
+                                        <?php if ($s === 'for approval'): ?>
+                                            <div class="dd-divider"></div>
+                                            <button class="dd-item approve approveButton" type="button"
+                                                data-id="<?= $ticket['id'] ?>"
+                                                data-title="<?= $ticket['title'] ?>"
+                                                data-code="<?= $ticket['ticket_code'] ?>"
+                                                data-author="<?= $ticket['author_fullname'] ?>">
+                                                <i class="ti ti-check" aria-hidden="true"></i> Approve
+                                            </button>
+                                            <a href="<?= base_url('tickets/status/rejected/' . $ticket['id']) ?>">
+                                                <button class="dd-item reject" type="button">
+                                                    <i class="ti ti-x" aria-hidden="true"></i> Reject
+                                                </button>
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- <td class="px-4 py-3 text-sm text-slate-700">
                                 
                                 <div class="flex flex-row gap-4 justify-center items-center">
 
@@ -322,7 +389,7 @@
 
 
 
-                                    <!-- APPROVE BUTTON-->
+                                    APPROVE BUTTON
                                         <div class="relative group">
                                             <button 
                                                 class="approveButton p-1 bg-[#f0fdf4] rounded-md border border-green-500 text-green-500 flex items-center justify-center"
@@ -349,7 +416,7 @@
                                      </a> 
 
 
-                                    <!-- REJECT BUTTON -->
+                                  REJECT BUTTON 
                                     <a href="<?= base_url('tickets/status/rejected/' . $ticket['id']) ?>">
 
                                         <div class="relative group">
@@ -371,7 +438,7 @@
                                         </div>
                                     </a> 
                                 </div> 
-                            </td>
+                            </td> -->
 
                         </tr>
 
@@ -520,6 +587,8 @@
     </div>
 
     <script>
+        // ─── HIDE/SHOW ACTION BUTTONS BASED ON STATUS ────────────────────────────────
+
         const STATUS_COL = 5;
         const PRIORITY_COL = 6;
 
@@ -604,6 +673,20 @@
             $('#statusTab').val('');
             table.search('').columns().search('').draw();
         });
+
+        // Dropdown toggle
+        $(document).on('click', '.dd-trigger', function (e) {
+            e.stopPropagation();
+            const menu = $(this).next('.dd-menu');
+            $('.dd-menu.open').not(menu).removeClass('open');
+            menu.toggleClass('open');
+        });
+
+        $(document).on('click', function () {
+            $('.dd-menu.open').removeClass('open');
+        });
+
+        
     </script>
 
    
@@ -616,10 +699,6 @@
         const approveButton = document.querySelectorAll('.approveButton');
 
         const back_button = document.getElementById('backbutton');
-
-        
-
-        
 
 
         approveButton.forEach(function(button) {

@@ -17,6 +17,10 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <script>
+        const BASE_URL = "<?= base_url() ?>";
+    </script>
+
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.34.0/fonts/tabler-icons.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -95,6 +99,20 @@
 
                 <div class="flex flex-wrap items-center gap-2 shrink-0">
 
+                     <button
+                        id=""
+                        data-ticketid="<?= $tckt_details['id'] ?>"
+                        data-title="<?= $tckt_details['title'] ?>"
+                        data-tcktCode="<?= $tckt_details['ticket_code'] ?>"
+                        data-priority="<?= $tckt_details['priority'] ?>"
+                        data-status="<?= $tckt_details['status'] ?>"
+                        data-departmentID="<?= $tckt_details['department_id'] ?>"
+                        data-departmentsName="<?= $tckt_details['dept_name'] ?>"
+                        class="inline-flex items-center gap-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 px-4 py-2.5 rounded-lg transition ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-git-fork-icon lucide-git-fork"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg>
+                        <span>Ticket Timeline</span>
+                    </button>
+
                     <button
                         id="ReassignEmpBtn"
                         data-ticketid="<?= $tckt_details['id'] ?>"
@@ -105,14 +123,8 @@
                         data-departments="<?= $tckt_details['department_id'] ?>"
                         data-departmentsName="<?= $tckt_details['dept_name'] ?>"
                         class="inline-flex items-center gap-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 px-4 py-2.5 rounded-lg transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                            <circle cx="9" cy="7" r="4" />
-                            <line x1="19" x2="19" y1="8" y2="14" />
-                            <line x1="22" x2="16" y1="11" y2="11" />
-                        </svg>
-                        <span>Re-Assign Employee</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building2-icon lucide-building-2"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>
+                        <span>Re-Assign Department</span>
                     </button>
 
                     <button
@@ -364,20 +376,20 @@
                     </div>
                 </div>
 
-                <div class="px-5 py-4">
+                <!-- <div class="px-5 py-4">
                     <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3">
                         Select Employee
                     </p>
                      <div class="border border-gray-200 rounded-lg text-sm">
                             <!-- <select name="employee" id="assign-employee-dropdown" class="w-full p-2 rounded-lg">
                                 <option value="" selected>Select Employee (PIC's)</option>
-                            </select> -->
+                            </select> 
                         <div id="re-assign-employee-dropdown" class="p-2">
-                            <!-- //checkbox is in here -->
+                            //checkbox is in here 
                         </div>
                         
                     </div>
-                </div>
+                </div> -->
 
                 <div class="px-5 py-3 border-t border-slate-100 flex justify-end gap-2">
                     <button type="button" id="re_assign_cancel"
@@ -386,13 +398,8 @@
                     </button>
                     <button type="submit"
                         class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-700 hover:bg-green-800 rounded-lg transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m16 11 2 2 4-4" />
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                            <circle cx="9" cy="7" r="4" />
-                        </svg>
-                        Assign Employee
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15   " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building2-icon lucide-building-2"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>
+                        Re-Assign Department
                     </button>
                 </div>
 
@@ -476,9 +483,7 @@
 
         </div>
     </div>
-    <script>
-        const BASE_URL = "<?= base_url() ?>";
-    </script>
+
     <script src="<?php echo base_url('assets/JavaScript/getEmployeeAjax.js') ?>"></script>
 
     <script>
@@ -499,11 +504,11 @@
         const span_employee  = document.getElementById('assigned_employees');
 
         // ── Show/Hide logic based on assignment status ──
-        if (span_employee.textContent.trim() === 'Not assigned yet') {
-            _reAssignBtn.style.display = 'none';
-        } else {
-            _assignEmpBtn.style.display = 'none';
-        }
+        // if (span_employee.textContent.trim() === 'Not assigned yet') {
+        //     _reAssignBtn.style.display = 'none';
+        // } else {
+        //     _assignEmpBtn.style.display = 'none';
+        // }
 
         // ── Re-Assign Modal ──
        _reAssignBtn.addEventListener('click', function () {
@@ -515,6 +520,7 @@
             reAssignModal.style.display = 'block';
             tabledata.classList.add('blur-sm');
         });
+
 
         reAssignBackBtn.addEventListener('click', function () {
             reAssignModal.style.display = 'none';

@@ -34,7 +34,7 @@ class Tickets_Model extends CI_Model
     $this->db->join('employee_details AS assignee_details', 'assignee_account.emp_id = assignee_details.id', 'left');
 
     // Department
-    $this->db->join('department', 'author_account.dept_id = department.id', 'left');
+    $this->db->join('department', 'tickets.department_id = department.id', 'left');
     $this->db->group_by('tickets.id');
 }
 
@@ -185,10 +185,19 @@ class Tickets_Model extends CI_Model
         $this->db->update('tickets', $data);
     }
 
-    public function updatedStatusReject($status, $id)
-    {
+    
+
+    public function updatedStatusReject($status, $id, $priority)
+    {   
+         $data = [
+            
+            'status' => $status,
+            'priority' => $priority,
+        ];
+
         $this->db->where('id', $id);
-        $this->db->update('tickets', ['status' => $status]);
+        $this->db->update('tickets', $data);
+        // $this->db->update('tickets', ['status' => $status]);
     }
 
 

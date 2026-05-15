@@ -197,8 +197,6 @@
         profile_dropdown.addEventListener('click', () => {
 
             dropdown_menu.classList.toggle('hidden');
-
-
         });
 
 
@@ -260,15 +258,6 @@
 
             // Re-draw the UI to show the file is gone
             updatePreviewUI();
-
-
-
-
-
-
-
-
-
 
         }
     </script>

@@ -130,6 +130,8 @@ class Tickets extends CI_Controller
     // ─── UPDATE STATUS ───────────────────────────────────────────────────────────
     public function updateStatus($status, $id)
     {
+
+
         //get the id and approved
         $priority = $this->input->post('modal_priority');
         $this->Tickets_Model->updateStatus($status, $id, $priority);
@@ -141,11 +143,15 @@ class Tickets extends CI_Controller
     }
 
     public function updateStatusReject($status, $id)
-    {
+    {   
 
-        $this->Tickets_Model->updatedStatusReject($status, $id);
+        $prio = 'closed';
+    
+        $this->Tickets_Model->updatedStatusReject($status, $id, $prio);
         $this->session->set_flashdata('success', 'Ticket has been rejected.');
         redirect('tickets/all');
+
+        
     }
 
 
@@ -193,8 +199,6 @@ class Tickets extends CI_Controller
         echo json_encode($data);
     }
 
-
-
     // ─── POST COMMENT ─────────────────────────────────────────────────────────────
 
     public function postComment($ticket_id)
@@ -218,19 +222,18 @@ class Tickets extends CI_Controller
 
     // ─── ASSIGN EMPLOYEE (INSERT) ─────────────────────────────────────────────────
     public function assignEmployee($ticket_id)
-    {
+    {   
         $employee_id  = $this->input->post('employeename');
 
-        // echo $ticket_id;
-        // print_r($employee_id);
-        // die();
-        // $mark  = (implode(',', $employee_id));
-        // echo $mark;
-        // die();
-        $this->Tickets_Model->assignEmployee($ticket_id, $employee_id);
-
-        $this->session->set_flashdata('success', 'Employee assigned successfully.');
-        redirect('tickets/details/view/' . $ticket_id);
+        //check if my sinilect na tao
+        if(isset($employee_id)){
+            $this->Tickets_Model->assignEmployee($ticket_id, $employee_id);
+            $this->session->set_flashdata('success', 'Employee assigned successfully.');
+            redirect('tickets/details/view/' . $ticket_id);
+        }else{
+             $this->session->set_flashdata('error', 'Please choose a employee.');
+             redirect('tickets/details/view/' . $ticket_id);
+        }
     }
 
     // ─── REASSIGN EMPLOYEE (UPDATE) ───────────────────────────────────────────────

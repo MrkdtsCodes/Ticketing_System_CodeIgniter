@@ -40,9 +40,11 @@ $route['tickets/reassign/(:num)'] = 'Tickets/reassignEmployee/$1';
 $route['tickets/comment/(:any)'] = 'Tickets/postComment/$1';
 
 // ─── STATUS ──────────────────────────────────────────────────────────────────
+$route['tickets/status/rejected/(:num)'] = 'Tickets/updateStatusReject/rejected/$1';  // ← specific FIRST
+$route['tickets/status/(:any)/(:num)']   = 'Tickets/updateStatus/$1/$2';              // ← generic SECOND
 
-$route['tickets/status/(:any)/(:num)'] = 'Tickets/updateStatus/$1/$2';
-// $route['tickets/status/(:any)'] = 'Tickets/updateStatus/$1';
+// $route['tickets/status/(:any)/(:num)'] = 'Tickets/updateStatus/$1/$2';
+// $route['tickets/status/rejected/(:num)'] = 'Tickets/updateStatusReject/rejected/$1';
 
 // ─── APPROVAL PAGE ───────────────────────────────────────────────────────────
 $route['tickets/approval'] = 'Pages/displayApprvlPgs';

@@ -1,8 +1,8 @@
 $(document).ready(function () {
 
-    // =====================
+
     // ASSIGN BUTTON
-    // =====================
+
     $('#AssignEmployeeBtn').click(function () {
 
         const departmentID = this.getAttribute('data-departmentID');
@@ -16,11 +16,11 @@ $(document).ready(function () {
             type: "GET",
             dataType: "JSON",
 
-            success: function (data) {
+            success: function(data){
 
                 let html = "";
 
-                data.forEach(function (emp) {
+                data.forEach(function(emp){
                     html += `
                         <div class="p-2 flex items-center gap-2">
                             <input type="checkbox"
@@ -40,45 +40,45 @@ $(document).ready(function () {
     });
 
 
-    // =====================
+ 
     // REASSIGN BUTTON
-    // =====================
-    $('#ReassignEmpBtn').click(function () {
 
-        const departmentID = this.getAttribute('data-departments');
+    // $('#ReassignEmpBtn').click(function () {
 
-        $.ajax({
-            url: BASE_URL + 'tickets/Reassign/getemployees/' + departmentID,
-            type: "GET",
-            dataType: "JSON",
+    //     const departmentID = this.getAttribute('data-departments');
 
-            success: function (data) {
+    //     $.ajax({
+    //         url: BASE_URL + 'tickets/Reassign/getemployees/' + departmentID,
+    //         type: "GET",
+    //         dataType: "JSON",
 
-                let html = "";
+    //         success: function (data) {
 
-                data.forEach(function (emp) {
-                    html += `
-                        <div class="p-2 flex items-center gap-2">
-                            <input type="checkbox"
-                                id="reassign_${emp.account_id}"
-                                name="employeename[]"
-                                value="${emp.account_id}">
-                            <label for="reassign_${emp.account_id}">
-                                ${emp.employee_fullname}
-                            </label>
-                        </div>
-                    `;
-                });
+    //             let html = "";
 
-                $("#re-assign-employee-dropdown").html(html);
-            }
-        });
-    });
+    //             data.forEach(function (emp) {
+    //                 html += `
+    //                     <div class="p-2 flex items-center gap-2">
+    //                         <input type="checkbox"
+    //                             id="reassign_${emp.account_id}"
+    //                             name="employeename[]"
+    //                             value="${emp.account_id}">
+    //                         <label for="reassign_${emp.account_id}">
+    //                             ${emp.employee_fullname}
+    //                         </label>
+    //                     </div>
+    //                 `;
+    //             });
+
+    //             $("#re-assign-employee-dropdown").html(html);
+    //         }
+    //     });
+    // });
 
 
-    // =====================
-    // DEPARTMENT CHANGE (FIXED)
-    // =====================
+
+    // DEPARTMENT CHANGE 
+
     $(document).on('change', '#department', function () {
 
         const dept_id = $(this).val();
