@@ -3,6 +3,7 @@
  * @property CI_Form_validation $form_validation
  * @property Auth_Model $Auth_Model
  * @property CI_input $input
+ * @property Tickets_Model $Tickets_Model
  *  @property CI_Session $session
  */
 
@@ -22,7 +23,7 @@ class AuthProcess extends CI_Controller
 
             $user = $this->Auth_Model->verifyAdmin($username, $password);
 
-            if ($user) {
+            if ($user){
 
                 $this->session->set_flashdata('Loggedin', "Welcome $username");
                 //create an userdata for session that we can access throughout pages
@@ -35,8 +36,8 @@ class AuthProcess extends CI_Controller
                 ];
 
                 $this->session->set_userdata($user_data);
-
-                redirect('tickets/create');
+                
+                redirect('tickets/dashboard');
                 //create session
             } else {
                 $this->session->set_flashdata('error', 'Email and Password did not match');
@@ -58,7 +59,7 @@ class AuthProcess extends CI_Controller
         $this->form_validation->set_rules('zipcode', 'Zipcode', 'required');
         $this->form_validation->set_rules('email', 'Email', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
-        $this->form_validation->set_rules('roles', 'Roles Category', 'required');
+        $this->form_validation->set_rules('role', 'Roles Category', 'required');
 
 
 
@@ -73,6 +74,35 @@ class AuthProcess extends CI_Controller
         } else {
             $data['roles'] = $this->Auth_Model->getRoles();
             $this->load->view('pages/create_account', $data);
+        }
+    }
+
+    public function createUser(){
+        // $this->form_validation->set_rules('inputname', 'Name you want in your message', 'rules to follow')
+
+        $this->form_validation->set_rules('lastname', 'Lastname', 'required');
+        $this->form_validation->set_rules('firstname', 'Firstname', 'required');
+        $this->form_validation->set_rules('middlename', 'Middlename', 'required');
+        $this->form_validation->set_rules('birthdate', 'BirthDate', 'required');
+        $this->form_validation->set_rules('address', 'Address', 'required');
+        $this->form_validation->set_rules('zipcode', 'Zipcode', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
+        $this->form_validation->set_rules('role', 'Roles Category', 'required');
+        $this->form_validation->set_rules('department', 'Department', 'required');
+
+        if ($this->form_validation->run() === TRUE) { //if tama lahat go pero kung hindi redirect
+            $is_saved = $this->Auth_Model->_insrtUsr();
+
+            if ($is_saved) {
+                echo "Pasok";
+            } else {
+                echo "hindi pumasok";
+            }
+        } else {
+            $data['roles'] = $this->Auth_Model->getRoles();
+            $data['departments'] = $this->Tickets_Model->getDprtmnts();
+            $this->load->view('pages/accountTable', $data);
         }
     }
 

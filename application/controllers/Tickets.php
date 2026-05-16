@@ -14,7 +14,6 @@ class Tickets extends CI_Controller
 {
 
     // ─── HELPER: shared file upload logic ────────────────────────────────────────
-
     private function _handleFileUploads()
     {
         $files_uploaded = $_FILES['userfile'];
@@ -154,10 +153,7 @@ class Tickets extends CI_Controller
         
     }
 
-
     // ─── TICKET DETAILS PAGE ─────────────────────────────────────────────────────
-
-
 
     public function returnticketDetails($id)
     {
@@ -250,5 +246,7 @@ class Tickets extends CI_Controller
         $this->session->set_flashdata('success', 'Employee re-assigned successfully.');
         redirect('tickets/details/view/' . $ticket_id);
     }
+
+
 
 }

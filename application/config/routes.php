@@ -9,15 +9,20 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login']           = 'Pages/displaylogin';
 $route['validate/user']   = 'AuthProcess/VerifyUsr';
 
+// // ─── ACCOUNTS ───────────────────────────────────────────────────────────────
+// $route['tickets/account']     = 'Pages/displayAccounts';
+// $route['tickets/create/account/(:num)/(:num)'] = 'AuthProcess/_crteUsr/$1/$2';
+
 // ─── ACCOUNT ─────────────────────────────────────────────────────────────────
-$route['create']          = 'Pages/displayCreateAcc';
-$route['create/account']  = 'AuthProcess/Insrtdata';
+$route['tickets/account'] = 'Pages/displayAccounts';
+$route['tickets/create/account']  = 'AuthProcess/createUser';
 
 // ─── DASHBOARD ───────────────────────────────────────────────────────────────
-$route['tickets/all']     = 'Pages/displayDshbrd';
+$route['tickets/dashboard']     = 'Pages/displayDashboard';
+$route['tickets/all']     = 'Pages/displayAllTckts';
 
 // ─── NAVBAR ──────────────────────────────────────────────────────────────────
-$route['navbar']          = 'Pages/displayNav';
+$route['navbar'] = 'Pages/displayNav';
 
 // ─── CREATE TICKET ───────────────────────────────────────────────────────────
 $route['tickets/create']  = 'Pages/displayCreateTickets';

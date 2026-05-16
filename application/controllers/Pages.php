@@ -16,6 +16,7 @@ class Pages extends CI_Controller
         if ($this->session->userdata('is_loggedin')) {
             redirect('create/tickets');
         }
+
         $this->load->view('pages/login_page');
     }
 
@@ -40,7 +41,31 @@ class Pages extends CI_Controller
     }
 
     //dashboard
-    public function displayDshbrd()
+        public function displayDashboard()
+    {
+        if (!$this->session->userdata('is_loggedin')) {
+            redirect('login');
+        }
+
+
+        $this->load->view('pages/navbar');
+        $this->load->view('pages/Dashboard');
+    }
+
+        //dashboard
+        public function displayAccounts()
+    {
+        if (!$this->session->userdata('is_loggedin')) {
+            redirect('login');
+        }
+
+        $data['departments'] = $this->Tickets_Model->getDprtmnts();
+        $data['roles'] = $this->Auth_Model->getRoles();
+        $this->load->view('pages/navbar');
+        $this->load->view('pages/accountTable', $data);
+    }
+
+    public function displayAllTckts()
     {
         if (!$this->session->userdata('is_loggedin')) {
             redirect('login');
@@ -48,7 +73,7 @@ class Pages extends CI_Controller
 
         $data['crtdTickets'] = $this->Tickets_Model->getTickets();
         $this->load->view('pages/navbar');
-        $this->load->view('pages/dashboard', $data);
+        $this->load->view('pages/ticketstable', $data);
     }
 
 

@@ -69,4 +69,42 @@ class Auth_Model extends CI_Model
         $query = $this->db->get('role');
         return $query->result_array();
     }
+
+        public function _insrtUsr(){
+                
+        $this->db->trans_start();
+
+        $empDetails = [
+
+            'lastname' => $this->input->post('lastname'),
+            'firstname' => $this->input->post('firstname'),
+            'middlename' => $this->input->post('middlename'),
+            'birthdate' => $this->input->post('birthdate'),
+            'address' => $this->input->post('address'),
+            'zipcode' => $this->input->post('zipcode'),
+
+           
+        ];
+
+        $this->db->insert('employee_details', $empDetails);
+        $emp_id = $this->db->insert_id();
+
+        $accountDetails = [
+
+            'emp_id' => $emp_id,
+            'role_id' => $this->input->post('role'),
+            'dept_id' => $this->input->post('department'),
+            'email' => $this->input->post('email'),
+            'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+            'status' => "active"
+        ];
+
+
+        $this->db->insert('account', $accountDetails);
+
+        return $this->db->trans_complete(); //returns true or false
+
+
+
+    }
 }

@@ -44,7 +44,6 @@ class Tickets_Model extends CI_Model
     public function getDprtmnts()
     {
         return $this->db->get('department')->result_array();
-
     }
 
 
