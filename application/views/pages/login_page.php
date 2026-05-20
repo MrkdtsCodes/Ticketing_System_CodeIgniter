@@ -118,6 +118,7 @@
     </style>
 </head>
 
+
 <body class="bg-noise min-h-screen flex items-center justify-center px-4">
     <div class="w-full max-w-md fade-in">
 

@@ -127,31 +127,35 @@ class Tickets extends CI_Controller
 
 
     // ─── UPDATE STATUS ───────────────────────────────────────────────────────────
+
     public function updateStatus($status, $id)
     {
-
-
-        //get the id and approved
         $priority = $this->input->post('modal_priority');
-        $this->Tickets_Model->updateStatus($status, $id, $priority);
 
-        //get post request from radio button
-        //show sucess 
+    
+        $this->Tickets_Model->updateStatus($status, $id, $priority);
         $this->session->set_flashdata('success', 'Ticket status updated to ' . $status . '.');
-        redirect('tickets/all');
+        redirect('tickets/details/view/' . $id);
     }
 
-    public function updateStatusReject($status, $id)
-    {   
+    public function updatePriorityAndStatus($status,$priority, $id){
+        $data = [
+            'status'   => $status,
+            'priority' => $priority,
+        ];
 
-        $prio = 'closed';
-    
-        $this->Tickets_Model->updatedStatusReject($status, $id, $prio);
+        $this->db->where('id', $id);
+        $this->db->update('tickets', $data);
+         redirect('tickets/details/view/' . $id);
+    }
+
+    public function updateStatusReject($id)
+    {
+        $this->Tickets_Model->updatedStatusReject('Rejected', $id);
         $this->session->set_flashdata('success', 'Ticket has been rejected.');
         redirect('tickets/all');
-
-        
     }
+
 
     // ─── TICKET DETAILS PAGE ─────────────────────────────────────────────────────
 
@@ -159,29 +163,18 @@ class Tickets extends CI_Controller
     {
         $data['tckt_details'] = $this->Tickets_Model->getData_for_ticket_details($id);
         $dept_id = $data['tckt_details']['department_id'];
-        // dept_id = 3
-        //ito yung ni return ng database natin
-        //ito laman niyan
-        //     tckt_details = [
-        //     'id' => 10,
-        //     'title' => 'Fix login bug',
-        //     'department_id' => 3,
-        //     'status' => 'open'
-        // ]
 
         $data['departments'] = $this->Tickets_Model->getDprtmnts();
         $data['comments'] = $this->Tickets_Model->get_ticket_comments($id);
         $data['attachments'] = $this->Tickets_Model->get_ticket_attachments($id);
-
-        // FIXED
         $data['employees'] = $this->Tickets_Model->getEmployee($dept_id);
-        
 
         $this->load->view('pages/navbar');
         $this->load->view('pages/ticket_details', $data);
     }
 
-    //ajax that loads the  dropdown input
+    // ─── AJAX: load employees for modal dropdown ──────────────────────────────────
+
     public function getEmployees($dept_id)
     {
         $data['employees'] = $this->Tickets_Model->getEmployee($dept_id);
@@ -189,8 +182,8 @@ class Tickets extends CI_Controller
         $this->load->view('pages/ticket_details', $data);
     }
 
-    public function getEmployeesForModal($dept_id){
-
+    public function getEmployeesForModal($dept_id)
+    {
         $data = $this->Tickets_Model->getEmployeeForMDL($dept_id);
         echo json_encode($data);
     }
@@ -217,36 +210,74 @@ class Tickets extends CI_Controller
         redirect('tickets/details/view/' . $ticket_id);
     }
 
-    // ─── ASSIGN EMPLOYEE (INSERT) ─────────────────────────────────────────────────
+
+    // ─── ASSIGN EMPLOYEE (first-time, INSERT into ticket_assigned) ────────────────
+
     public function assignEmployee($ticket_id)
-    {   
-        $employee_id  = $this->input->post('employeename');
-
-        //check if my sinilect na tao
-        if(isset($employee_id)){
-            $this->Tickets_Model->assignEmployee($ticket_id, $employee_id);
-            $this->session->set_flashdata('success', 'Employee assigned successfully.');
-            redirect('tickets/details/view/' . $ticket_id);
-        }else{
-             $this->session->set_flashdata('error', 'Please choose a employee.');
-             redirect('tickets/details/view/' . $ticket_id);
-        }
-    }
-
-    // ─── REASSIGN EMPLOYEE (UPDATE) ───────────────────────────────────────────────
-    public function reassignEmployee($ticket_id)
     {
+        $employee_ids = $this->input->post('employeename');
 
-        $departmentID = $this->input->post('department');
+        if (!empty($employee_ids)) {
+            $this->Tickets_Model->assignEmployee($ticket_id, $employee_ids);
+            $this->session->set_flashdata('success', 'Employee assigned successfully.');
+        } else {
+            $this->session->set_flashdata('error', 'Please choose an employee.');
+        }
 
-
-        $this->Tickets_Model->reassignEmployee($ticket_id, $departmentID);
-
-
-        $this->session->set_flashdata('success', 'Employee re-assigned successfully.');
         redirect('tickets/details/view/' . $ticket_id);
     }
 
 
+    // ─── REASSIGN DEPARTMENT (resets ticket back to For Approval, clears assignees) ──
+
+    public function reassignDepartment($ticket_id)
+    {
+        $department_id = (int) $this->input->post('department');
+
+        // Guard: department_id must be a valid non-zero integer
+        if (empty($department_id)) {
+            $this->session->set_flashdata('error', 'Please select a valid department.');
+            redirect('tickets/details/view/' . $ticket_id);
+            return;
+        }
+
+        $this->Tickets_Model->reassignDepartment($ticket_id, $department_id);
+        $this->session->set_flashdata('success', 'Department re-assigned successfully. Ticket is back for approval.');
+        redirect('tickets/details/view/' . $ticket_id);
+    }
+
+
+    // ─── REASSIGN EMPLOYEE ONLY (swap assigned employees, keep department + status) ──
+
+    public function reassignEmployeeOnly($ticket_id)
+    {
+        $employee_ids  = $this->input->post('employeename');
+        $department_id = (int) $this->input->post('department_id');
+
+        if (!empty($employee_ids)) {
+            $this->Tickets_Model->reassignEmployeeOnly($ticket_id, $employee_ids, $department_id);
+            $this->session->set_flashdata('success', 'Employee re-assigned successfully.');
+        } else {
+            $this->session->set_flashdata('error', 'Please choose at least one employee.');
+        }
+
+        redirect('tickets/details/view/' . $ticket_id);
+    }
+
+
+    // ─── START WORKING → set status to On Going ───────────────────────────────────
+
+    public function strtWrking($tckt_id)
+    {
+        $result = $this->Tickets_Model->StrtSts($tckt_id);
+
+        if ($result === TRUE) {
+            echo json_encode(['result' => $result]);
+            return;
+        }
+
+        $this->session->set_flashdata('error', 'Something went wrong.');
+        redirect('tickets/details/view/' . $tckt_id);
+    }
 
 }

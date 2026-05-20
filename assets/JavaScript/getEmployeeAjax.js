@@ -9,18 +9,22 @@ $(document).ready(function () {
         const departmentName = this.getAttribute('data-departmentsName');
 
         $('#employeeModalDisplay').text(departmentName);
+        //hidden input
         $('#assign-department-id').val(departmentID);
+        // $.post('link',{},function(response){
 
+        // },'json')
         $.ajax({
             url: BASE_URL + 'tickets/Reassign/getemployees/' + departmentID,
             type: "GET",
             dataType: "JSON",
 
-            success: function(data){
+            success: function(response){
 
                 let html = "";
 
-                data.forEach(function(emp){
+                response.forEach(function(emp){
+                    
                     html += `
                         <div class="p-2 flex items-center gap-2">
                             <input type="checkbox"
@@ -32,6 +36,10 @@ $(document).ready(function () {
                             </label>
                         </div>
                     `;
+                    
+                   html += `
+                    <p>`+emp.employee_fullname+`</p>
+                   `;
                 });
 
                 $("#assign-employee-dropdown").html(html);

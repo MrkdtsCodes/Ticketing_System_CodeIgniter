@@ -23,6 +23,7 @@ class AuthProcess extends CI_Controller
 
             $user = $this->Auth_Model->verifyAdmin($username, $password);
 
+
             if ($user){
 
                 $this->session->set_flashdata('Loggedin', "Welcome $username");
@@ -32,6 +33,7 @@ class AuthProcess extends CI_Controller
                     'lastname' => $user->lastname,
                     'firstname' => $user->firstname,
                     'middlename' => $user->middlename,
+                    'role_name' => $user->role_name,
                     'is_loggedin' => true
                 ];
 
@@ -102,8 +104,48 @@ class AuthProcess extends CI_Controller
         } else {
             $data['roles'] = $this->Auth_Model->getRoles();
             $data['departments'] = $this->Tickets_Model->getDprtmnts();
+            $data['accounts'] = $this->Auth_Model->getAccountsWithDetails();
+            $this->load->view('pages/navbar');
             $this->load->view('pages/accountTable', $data);
         }
+    }
+
+    public function accounts(){
+        $data['accounts'] = $this->Auth_Model->getAccountsWithDetails();
+        $this->load->view('pages/accountTable', $data);
+        }
+
+    public function updateUsr($acc_id){
+
+        $is_saved = $this->Auth_Model->_updateUsr($acc_id);
+
+        if($is_saved){
+
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'User updated successfully',
+                "accounts" => []
+            ]);
+
+        }else{
+
+            echo json_encode([
+                'status' => 'error'
+            ]);
+
+        }
+
+    }
+
+    //status active or deactivated account
+
+    public function updtdStatus($id){
+
+        $updated = $this->Auth_Model->deactivateUsr($id);
+
+        echo json_encode([
+              'message' => $updated
+        ]);
     }
 
 

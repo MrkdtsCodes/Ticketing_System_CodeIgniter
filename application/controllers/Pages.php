@@ -61,8 +61,35 @@ class Pages extends CI_Controller
 
         $data['departments'] = $this->Tickets_Model->getDprtmnts();
         $data['roles'] = $this->Auth_Model->getRoles();
+        $data['accounts'] = $this->Auth_Model->getAccountsWithDetails();
         $this->load->view('pages/navbar');
         $this->load->view('pages/accountTable', $data);
+    }
+
+    //update table data for ajax 
+    public function getUpdatedtableData(){
+
+        $data['updatedData'] = $this->Auth_Model->getAccountsWithDetails();
+
+        if(!empty( $data['updatedData'])){
+        print_r($data['updatedData']);
+            echo json_encode([
+
+                'status' => 'success',
+                'message' => 'User updated successfully'
+
+            ]);
+        }else{
+
+        echo json_encode([
+
+                'status' => 'error',
+                'message' => 'User updated failed'
+
+            ]);
+
+        }
+        
     }
 
     public function displayAllTckts()
