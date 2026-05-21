@@ -131,12 +131,12 @@
 
                     <!-- USER NAME -->
                     <span class="hidden md:block text-sm font-medium text-gray-700">
-                        <?php
+                        <!-- <?php
                         if ($this->session->userdata('user_id')) {
                             echo strtoupper($this->session->userdata('firstname')) . " " .
                                  strtoupper($this->session->userdata('lastname'));
                         }
-                        ?>
+                        ?> -->
                     </span>
 
                     <!-- AVATAR -->

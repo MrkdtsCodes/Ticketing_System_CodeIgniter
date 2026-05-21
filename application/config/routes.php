@@ -60,3 +60,7 @@ $route['tickets/working/(:num)'] = 'Tickets/strtWrking/$1';
 
 // ─── LOGOUT ──────────────────────────────────────────────────────────────────
 $route['Logout'] = 'AuthProcess/Logout';
+
+// ─── Refactored files ─────────────────────────────────────────────────────────
+
+$route['refactored'] = 'Tickets/refactoredTckttables';

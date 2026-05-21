@@ -280,4 +280,14 @@ class Tickets extends CI_Controller
         redirect('tickets/details/view/' . $tckt_id);
     }
 
+    // ─── TICKETS TABLE REFACTORED ───────────────────────────────────
+
+    public function refactoredTckttables(){
+
+        $data['tickets'] = $this->Tickets_Model->getTickets();
+        $this->load->view('pages/navbar');
+        $this->load->view('pages/refactsTckttable', $data);
+    }
+
+
 }

@@ -21,7 +21,7 @@ class AuthProcess extends CI_Controller
             $username = $this->input->post('email');
             $password = $this->input->post('password');
 
-            $user = $this->Auth_Model->verifyAdmin($username, $password);
+            $user = $this->Auth_Model->verifyAdmin($username, $password);   
 
 
             if ($user){
