@@ -64,3 +64,4 @@ $route['Logout'] = 'AuthProcess/Logout';
 // ─── Refactored files ─────────────────────────────────────────────────────────
 
 $route['refactored'] = 'Tickets/refactoredTckttables';
+$route['test/ajax'] = 'Tickets/testing';

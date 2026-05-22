@@ -139,9 +139,12 @@
                         ?> -->
                     </span>
 
+                    <div class="text-sm font-medium text-gray-700">
+                         <?php echo ($this->session->userdata('firstname')) . " " . ($this->session->userdata('lastname'));?>
+                    </div>
+
                     <!-- AVATAR -->
                     <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 border border-gray-200 hover:bg-gray-200 transition">
-
                         <svg xmlns="http://www.w3.org/2000/svg"
                             width="18"
                             height="18"
@@ -154,16 +157,9 @@
 
                             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                             <circle cx="12" cy="7" r="4" />
-                        </svg>
+                        </svg>                      
                     </div>
-                     <?php
-                         
-                            echo strtoupper($this->session->userdata('firstname')) . " " .
-                                 strtoupper($this->session->userdata('lastname'));
-                        
-                        ?>
-                    
-
+                           
                     <!-- DROPDOWN MENU -->
                     <div id="dropdown_menu"
                         class="hidden absolute top-14 right-0 w-52 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden z-50">

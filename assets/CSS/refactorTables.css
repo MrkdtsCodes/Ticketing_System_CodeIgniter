@@ -1,0 +1,7 @@
+ .nav-tab {
+            padding: 6px 18px; border-radius: 6px; font-size: 13px; font-weight: 500;
+            border: 1px solid #e2e8f0; background: #f1f5f9; color: #475569;
+            cursor: pointer; transition: all .15s;
+        }
+.nav-tab:hover { background: #64748b; color: white; }
+.nav-tab.active { background: #475569; color: white; border-color: #475569; }

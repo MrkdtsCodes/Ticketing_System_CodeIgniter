@@ -289,5 +289,15 @@ class Tickets extends CI_Controller
         $this->load->view('pages/refactsTckttable', $data);
     }
 
+    public function testing(){
+
+        $getData = true;
+
+         if ($getData === true) {
+            echo json_encode(['result' => $getData]);
+            return;
+        }
+    }
+
 
 }
