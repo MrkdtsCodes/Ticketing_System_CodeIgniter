@@ -73,6 +73,8 @@ class Tickets_Model extends CI_Model
         $this->db->join('department', 'tickets.department_id = department.id', 'left');
 
         $this->db->group_by('tickets.id');
+
+
     }
 
 
@@ -135,6 +137,8 @@ class Tickets_Model extends CI_Model
     public function getTickets()
     {
         $this->_baseTicketQuery();
+        $this->db->LIMIT('5');
+        $this->db->OFFSET('0');
         return $this->db->get()->result_array();
     }
 
@@ -477,6 +481,15 @@ class Tickets_Model extends CI_Model
         $this->db->order_by('tickets_history.changed_at', 'DESC');
 
         return $this->db->get()->result_array();
+    }
+
+    public function getpage2rows(){
+        $this->_baseTicketQuery();
+
+        $this->db->LIMIT('5');
+        $this->db->OFFSET('5');
+        return $this->db->get()->result_array();
+
     }
 
 }

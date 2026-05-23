@@ -79,7 +79,7 @@
                         <th class="px-4 py-3 text-center font-semibold">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tablebody">
                     <?php foreach ($tickets as $createdTickets): ?>
                         <tr class="bg-white hover:bg-slate-50 transition border border-slate-100 rounded-lg">
 
@@ -94,7 +94,7 @@
                                         case($tcktAge > 8):
                                             echo "#FA5C5C";
                                             break;
-                                        case($tcktAge >= 7):
+                                        case($tcktAge >= 4):
                                             echo "#FFE893";
                                             break;
                                         case($tcktAge <= 3):
@@ -171,6 +171,32 @@
                 </tbody>
 
             </table>
+
+
+        </div>
+        
+        <div class="">
+
+            <div class="max-w-60 border p-4 flex-row 
+            
+            ">
+            
+                    <span id="paginationBtn_Page1"
+                    class="border border-black p-2"
+                    >
+                    <button>1</button>
+                    </span>
+
+                    <span id="paginationBtn_Page2"
+                    class="border border-black p-2"
+                    >
+                    <button>2</button>
+                    </span>
+                
+        
+            </div>
+                            
+        
         </div>
 
     </main>

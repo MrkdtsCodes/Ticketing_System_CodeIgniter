@@ -65,3 +65,5 @@ $route['Logout'] = 'AuthProcess/Logout';
 
 $route['refactored'] = 'Tickets/refactoredTckttables';
 $route['test/ajax'] = 'Tickets/testing';
+// $route['test/page2/(:num)'] = 'Tickets/pagination_page2/$1';
+$route['test/page2'] = 'Tickets/pagination_page2';
