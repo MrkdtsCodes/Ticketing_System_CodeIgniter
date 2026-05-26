@@ -299,8 +299,8 @@ class Tickets extends CI_Controller
         }
     }
 
-    public function pagination_page2(){
-        $data = $this->Tickets_Model->getpage2rows();
+    public function pagination_pages($lims, $offs){
+        $data = $this->Tickets_Model->paginations($lims, $offs);
 
          if ($data){
             echo json_encode(['result' => $data]);

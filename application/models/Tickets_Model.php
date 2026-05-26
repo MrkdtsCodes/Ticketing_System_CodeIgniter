@@ -483,11 +483,14 @@ class Tickets_Model extends CI_Model
         return $this->db->get()->result_array();
     }
 
-    public function getpage2rows(){
+    public function paginations($lims, $offs){
+        $limit = $lims;
+        $offset = $offs;
+
         $this->_baseTicketQuery();
 
-        $this->db->LIMIT('5');
-        $this->db->OFFSET('5');
+        $this->db->LIMIT($limit);
+        $this->db->OFFSET($offset);
         return $this->db->get()->result_array();
 
     }
