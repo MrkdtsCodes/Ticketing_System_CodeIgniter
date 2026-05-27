@@ -287,6 +287,8 @@ class Tickets extends CI_Controller
         $data['tickets'] = $this->Tickets_Model->getTickets();
         $this->load->view('pages/navbar');
         $this->load->view('pages/refactsTckttable', $data);
+
+        
     }
 
     public function testing(){
@@ -306,6 +308,29 @@ class Tickets extends CI_Controller
             echo json_encode(['result' => $data]);
             return;
         }
+    }
+
+    public function pageCount(){
+        $data = $this->Tickets_Model->getTickets();
+        // $this->load->view('pages/navbar');
+        // $this->load->view('pages/refactsTckttable', $data);
+
+        if($data){
+            echo json_encode($data);
+            return; 
+        }
+    
+    }
+
+    public function getallForPagination(){
+        $data = $this->Tickets_Model->getallForPagination();
+
+        if($data){
+            echo json_encode($data); 
+            //turns the php data to JSON sino ba si json siya ba si json tatum?
+            return; 
+        }
+    
     }
 
 

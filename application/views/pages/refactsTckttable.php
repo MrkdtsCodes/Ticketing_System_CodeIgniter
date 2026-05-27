@@ -30,7 +30,7 @@
 
             <!-- LEFT: nav tabs — ALL use data-filter, no hard href -->
             <div class="flex items-center justify-end gap-2 flex-row flex-wrap">
-                <button id="sampletable" data-offset='0' data-limit='5' class="nav-tab active" data-filter="">example button</button>
+                <button id="refactoredtickts_BTTN" class="nav-tab">Example</button>
                 <button class="nav-tab active" data-filter="">All</button>
                 <button class="nav-tab" data-filter="For Approval" id="forApproval_tab">For Approval</button>
                 <button class="nav-tab" data-filter="Approved">Approved</button>
@@ -81,6 +81,94 @@
                     </tr>
                 </thead>
                 <tbody id="tablebody">
+                    <?php foreach ($tickets as $createdTickets): ?>
+                        <tr class="bg-white hover:bg-slate-50 transition border border-slate-100 rounded-lg">
+
+                            <td class="px-4 py-3 text-sm text-slate-700 text-center">
+                                
+                                <div class="border border-gray text-normal" 
+                                     style="
+                                     background:<?php  
+                                     $tcktAge = $createdTickets['Ticket_Age'];
+
+                                     switch($tcktAge){
+                                        case($tcktAge > 8):
+                                            echo "#FA5C5C";
+                                            break;
+                                        case($tcktAge >= 4):
+                                            echo "#FFE893";
+                                            break;
+                                        case($tcktAge <= 3):
+                                            echo "#A3D78A";
+                                            break;
+                                     }
+
+                                     ?>;
+                                     color:<?php  
+                                     $tcktAge = $createdTickets['Ticket_Age'];
+
+                                     switch($tcktAge){
+                                        case($tcktAge > 8):
+                                            echo "white";
+                                            break;
+                                        case($tcktAge >= 7):
+                                            echo "gray";
+                                            break;
+                                        case($tcktAge <= 3):
+                                            echo "gray";
+                                            break;
+                                     }
+
+                                     ?>
+                                     
+                                     ">
+                                    <?php echo $createdTickets['Ticket_Age'] ?>
+                                </div>
+
+                            </td>
+
+                            <td class="px-4 py-3 text-sm text-slate-700 text-center"><?php echo $createdTickets['ticket_code'] ?>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-slate-700 text-center"><?php echo $createdTickets['title'] ?>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-slate-700 text-center"><?php echo $createdTickets['author_fullname'] ?>
+                            </td>
+<!--                             
+                            <td class="px-4 py-3 text-sm text-slate-700 text-center">
+                                <?php echo $pics ?>
+                            </td>s -->
+                            <td class="px-4 py-3 text-sm text-slate-700 text-center">
+                                <?php echo $createdTickets['status'] ?>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-slate-700 text-center">
+                                <?php echo $createdTickets['priority'] ?>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-slate-700 text-center">
+                                <?php echo $createdTickets['dept_name'] ?>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-slate-700 text-center">
+                                 <?php echo date("M d, Y g:i a" , strtotime($createdTickets['created_at'])) ?>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-slate-700 text-center">
+                                <?php echo date("M d, Y g:i a" , strtotime($createdTickets['updated_at'])) ?>
+                            </td>
+                            <td class="">
+                                <div>
+                                    <div class="flex">
+                                        <select name="" id=""
+                                        class="text-sm p-1">
+                                            <option value="" selected disabled>Action</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+
+
+
+                    <?php endforeach; ?>
+
                 </tbody>
 
             </table>
@@ -88,20 +176,10 @@
 
         </div>
         
-        <div class="">
+         <div class="">
 
-            <div class="max-w-60 border p-4 flex-row">          
-                    <span id="paginationBtn_Page1"
-                        data-offset='0' data-limit='5'
-                        class="border border-black p-2">
-                        <button>1</button>
-                    </span>
-
-                    <span id="paginationBtn_Page2"
-                        data-offset='5' data-limit='5'
-                        class="border border-black p-2">
-                        <button>2</button>
-                    </span>
+            <div id="container" class="max-w-60 border p-4 flex flex-row">          
+                   <!-- dito yung pagination na ginegenerate ng javascript --!>
             </div>
                             
         

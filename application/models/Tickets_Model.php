@@ -137,8 +137,6 @@ class Tickets_Model extends CI_Model
     public function getTickets()
     {
         $this->_baseTicketQuery();
-        $this->db->LIMIT('5');
-        $this->db->OFFSET('0');
         return $this->db->get()->result_array();
     }
 
@@ -493,6 +491,11 @@ class Tickets_Model extends CI_Model
         $this->db->OFFSET($offset);
         return $this->db->get()->result_array();
 
+    }
+
+    public function getallForPagination(){
+        $this->_baseTicketQuery();
+        return $this->db->get()->result_array();
     }
 
 }
