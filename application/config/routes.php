@@ -7,7 +7,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 // ─── AUTH ────────────────────────────────────────────────────────────────────
 $route['login']           = 'Pages/displaylogin';
-$route['validate/user']   = 'AuthProcess/VerifyUsr';
+$route['validate/user']   = 'AuthProcess/VerifyUsrs';
 
 // ─── ACCOUNT ─────────────────────────────────────────────────────────────────
 $route['tickets/account']                       = 'Pages/displayAccounts';
@@ -71,3 +71,15 @@ $route['test/page2/(:num)/(:num)'] = 'Tickets/pagination_pages/$1/$2';
 $route['test/pageCount'] = 'Tickets/pageCount';
 
 $route['get/all/forPagination'] = 'Tickets/getallForPagination';
+
+// ─── Testing files ─────────────────────────────────────────────────────────
+$route['example_form'] = 'Pages/displayFormPage';
+$route['example_to_controller'] = 'Tickets/controller_for_batch_update';
+
+// ─── new creatiton of ticket ─────────────────────────────────────────────────────────
+
+//display means show the UI
+
+$route['newTixs'] = 'Pages/index';
+
+$route['filterTicket/(:num)'] = 'Tickets/applyTicketFilters/$1';

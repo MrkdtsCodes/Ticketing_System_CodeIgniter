@@ -69,13 +69,71 @@ class Tickets_Model extends CI_Model
         $this->db->join('account AS assignee_account', 'ticket_assigned.assigned_to = assignee_account.id', 'left');
         $this->db->join('employee_details AS assignee_details', 'assignee_account.emp_id = assignee_details.id', 'left');
 
-        // Department
         $this->db->join('department', 'tickets.department_id = department.id', 'left');
-
         $this->db->group_by('tickets.id');
-
-
     }
+
+    public function get_many_by($limit = 0, $count = false, $order_by='', $sort_by='Desc')
+    {
+        $this->_baseTicketQuery();
+
+        if($limit != 0){
+            $this->db->limit($limit);
+        };
+
+        if($count){
+            $this->db->from('tickets');
+           return $this->db->count_all_results('id');
+        }else{
+            return $this->db->get()->result_array();
+        }
+        
+    }
+
+
+
+    // private function _manualquery()
+    // {
+    //     $sql = "
+    //         SELECT 
+    //         tickets.id,
+    //         CONCAT('TCK-', LPAD(tickets.id, 5, '0')) AS ticket_code,
+    //         tickets.department_id,
+    //         tickets.title,
+    //         tickets.body,
+    //         tickets.priority,
+    //         tickets.status,
+    //         tickets.created_at,
+    //         tickets.updated_at,
+    //         department.dept_name,
+    //         ticket_assigned.date_assigned,
+    //         ticket_assigned.date_update,
+    //         DATEDIFF(NOW(), tickets.created_at) AS Ticket_Age,
+    //         TIMEDIFF(NOW(), tickets.created_at) AS Ticket_time,
+    //         CONCAT(author_details.firstname, ' ', author_details.lastname) AS author_fullname,
+    //         GROUP_CONCAT(assignee_details.firstname, ' ', assignee_details.lastname SEPARATOR ', ') AS assigned_employees
+
+    //         FROM tickets
+
+    //         LEFT JOIN account AS author_account 
+    //             ON tickets.author_id = author_account.id
+    //         LEFT JOIN employee_details AS author_details 
+    //             ON tickets.author_id = author_account.id
+    //         LEFT JOIN ticket_assigned
+    //             ON tickets.id = ticket_assigned.ticket_id
+    //         LEFT JOIN account AS assignee_account
+    //             ON ticket_assigned.assigned_to = assignee_account.id
+    //         LEFT JOIN employee_details AS assignee_details
+    //             ON assignee_account.emp_id = assignee_details.id
+    //         LEFT JOIN department
+    //             ON tickets.department_id = department.id
+    //         GROUP BY tickets.id;
+    //     ";
+
+    //    $query = $this->db->query($sql);
+
+    //    return $query->result_array(); // get all the rows
+    // }
 
 
     // ─── DEPARTMENTS ─────────────────────────────────────────────────────────────
@@ -88,8 +146,7 @@ class Tickets_Model extends CI_Model
 
     // ─── CREATE TICKET ───────────────────────────────────────────────────────────
 
-    public function insrtCrtdTicket($filename)
-    {
+    public function insrtCrtdTicket($filename){
         $author_id = $this->session->userdata('user_id');
 
         $this->db->trans_start();
@@ -498,4 +555,7 @@ class Tickets_Model extends CI_Model
         return $this->db->get()->result_array();
     }
 
+    public function filterparams(){
+
+    }
 }
