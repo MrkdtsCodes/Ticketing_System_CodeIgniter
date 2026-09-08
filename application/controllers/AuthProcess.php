@@ -9,25 +9,21 @@
 
 class AuthProcess extends CI_Controller
 {
-
-
-    public function VerifyUsr()
+    public function VerifyUsrs()
     {
         $this->form_validation->set_rules('email', 'Email', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
-
 
         if ($this->form_validation->run()) {
             $username = $this->input->post('email');
             $password = $this->input->post('password');
 
-            $user = $this->Auth_Model->verifyAdmin($username, $password);   
-
+            $user = $this->Auth_Model->verifyAdmin($username, $password);  
 
             if ($user){
 
                 $this->session->set_flashdata('Loggedin', "Welcome $username");
-                //create an userdata for session that we can access throughout pages
+                    //create an userdata for session that we can access throughout pages
                 $user_data = [
                     'user_id' => $user->account_id,
                     'lastname' => $user->lastname,
@@ -63,7 +59,7 @@ class AuthProcess extends CI_Controller
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
         $this->form_validation->set_rules('role', 'Roles Category', 'required');
 
-
+        //bulk insert - new update
 
         if ($this->form_validation->run()) { //if tama lahat go pero kung hindi redirect
             $is_saved = $this->Auth_Model->InsrtEmply();

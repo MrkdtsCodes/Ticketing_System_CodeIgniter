@@ -2,6 +2,74 @@
 
 class Auth_Model extends CI_Model
 {
+    public function get_many_by($params = array(), $count = false)
+    {
+        if( ! empty($params['date']))
+        {
+            $this->db->where('DATE(cs_blog.created)', $params['date']);
+        }
+
+        if( ! empty($params['keywords']))
+        {
+            $fields = ['cs_blog.id', 'cs_blog.title', 'cs_blog.body'];
+
+            $this->db->group_start();
+
+            // specific search (" ")
+            if(preg_match('/"([^"]+)"/', $params['keywords'], $m))
+            {
+                $params['keywords'] = $m[1];
+                foreach($fields as $key => $field)
+                {
+                    if($key) $this->db->or_where($field, $params['keywords']);
+                    else $this->db->where($field, $params['keywords']);
+                }
+            }
+            else
+            {
+                foreach($fields as $key => $field)
+                {
+                    if($key) $this->db->or_like($field, $params['keywords']);
+                    else $this->db->like($field, $params['keywords']);
+                }
+            }
+            $this->db->group_end();
+            
+        }
+
+        $last_update = 'COALESCE(cs_blog.updated, cs_blog.created)';
+        
+        $this->db->select('cs_blog.*, category.name as category_name, CONCAT(uc.first_name, " ", uc.last_name) as created_name');
+        $this->db->select($last_update .' as `last_updated`, COALESCE(uu.name, uc.name) as `last_updated_by`', false);
+        $this->db->select('cs_files.width as thumb_width');
+        $this->db->select("
+                            IF(prop.main_residential_type = 'lot', 'Lot Only',
+                                IF(prop.construction_type_id IN (431,430), 'Ground-up', 'Renovation')
+                            ) as property_type_label
+                        ", false);
+        
+        $this->db->join('cs_blog_categories as category', 'category.id = cs_blog.category_id', 'left');
+        $this->db->join('cs_files', 'cs_files.id = cs_blog.thumb', 'left');
+        
+        $this->db->join('cs_users as uc', 'uc.id = cs_blog.created_by', 'left');
+        $this->db->join('cs_users as uu', 'uu.id = cs_blog.updated_by', 'left');
+        
+        $this->db->where('cs_blog.deleted', null);
+        
+        if( ! $count)
+        {
+            $this->db->order_by('cs_blog.created', 'DESC');
+            
+            $result = $this->db->get_where('cs_blog')->result();
+            
+            return $result;
+        }
+        else
+        {
+            
+            return $this->db->count_all_results('cs_blog');
+        }
+    }
 
     public function verifyAdmin($username, $password)
     {

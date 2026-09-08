@@ -81,5 +81,5 @@ $route['example_to_controller'] = 'Tickets/controller_for_batch_update';
 //display means show the UI
 
 $route['newTixs'] = 'Pages/index';
-
-$route['filterTicket/(:num)'] = 'Tickets/applyTicketFilters/$1';
+$route['filterTicket'] = 'Tickets/filter_tickets';
+// $route['filterTicket/(:num)'] = 'Tickets/applyTicketFilters/$1';

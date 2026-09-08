@@ -118,6 +118,10 @@ class Pages extends CI_Controller
         $this->load->view('pages/create_tickets', $data);
     }
 
+    public function displayFormPage(){
+        $this->load->view('pages/forms');
+    }
+
     
 
 
@@ -163,17 +167,35 @@ class Pages extends CI_Controller
 
 
 
+    public function display_new_createTicket(){
+        $input = json_decode(file_get_contents("php://input"), true);
+        $name = $this->input->post('input[firstname]');
+        echo $input;
+ 
 
+        return("Success");
+    }
 
+    public function index()
+    {
+        $data = $this->createPagination();
+        $this->load->view('pages/tickets/index', $data);
+    }
 
+    private function createPagination(){
 
+        $this->load->library('pagination');
+        $config['base_url'] = base_url() . $this->router->fetch_class() . '/' . $this->router->fetch_method();
+        $config['total_rows'] = $this->Tickets_Model->get_many_by( 0, 0, true);
+        $config['per_page'] = 10;
+        $config['uri_segment'] = 3;   // this checks the uri for the number it holds 
+        $offset = $this->uri->segment(3);
+        $this->pagination->initialize($config);  
+        $data['crtdTickets'] = $this->Tickets_Model->get_many_by($config['per_page'], $offset);
+        $data['links'] = $this->pagination->create_links();
 
-
-
-
-
-
-
-
-
+        return $data;
+        
+    }
+    
 }

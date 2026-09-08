@@ -13,23 +13,51 @@
 </head>
 
 <body class="p-6">
-    <nav class="p-4 mb-3 border border-red-300 flex "> 
-        <form action="" class="" data-limit="" data-order_by="">
-         
-        </form>
-            <div>
-                <button class="border border-blue-500 px-4" data-order_by="forapproval">For Approval</button>
-                <button class="border border-blue-500 px-4" >Approved</button>
-                <button class="border border-blue-500 px-4" >Assigned</button>
-                <button class="border border-blue-500 px-4" >On-going</button>
-            </div>
-        <div class="all_btn_tab">
-            <button class="limits border border-blue-500 px-4" data-limit="0">All</button>
-        </div>
+    <nav class="p-4 mb-3 border border-red-300 flex">
 
-        <div>
-            <button class="limits border border-blue-500 px-4" data-limit="10">limit</button>
-        </div>
+        <form id="tickets_filter">
+
+            <div class="flex gap-3">
+
+                <!-- Status -->
+                <div>
+                    <select name="status" id="status">
+                        <option value="" selected disabled>Status</option>
+                        <option value="assigned">Assigned</option>
+                        <option value="for_approval">For Approval</option>
+                        <option value="approved">Approved</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+
+                <!-- Priority -->
+                <div>
+                    <select name="priority" id="priority">
+                        <option value="" selected disabled>Priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+
+                <!-- Assigned Employee -->
+                <div>
+                    <select name="assigned_employee" id="assigned_employee">
+                        <option value="" selected disabled>
+                            Assigned Employee
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Filter Button -->
+                <button type="submit" id="f_button">
+                    Filter
+                </button>
+
+            </div>
+
+        </form>
+
     </nav>
 
     <div id = "Target">
@@ -42,7 +70,7 @@
 
     $(document).ready(function(){
     const base_url = 'http://localhost/Projects/TICKETING_SYSTEM/';
-
+    const form = document.getElementById('tickets_filter')
         $('.limits').click(function (){
             const limit = this.getAttribute('data-limit');
             $.ajax({
@@ -57,6 +85,33 @@
                     console.error("The Error is: ",error);
                 }
             });
+        });
+
+        $('.pagination').find('[data-ci-pagination-page]').css({
+            border: "1px solid black",
+            padding: "5px",
+
+        });
+
+         $('.pagination').find('strong').css({
+            border: "1px solid green",
+            padding: "5px",
+            color: 'green'
+
+        })
+
+        $('#f_button').click(function(e){
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const formObjct = Object.fromEntries(formData);
+            console.log("JS CONSOLE OBJ",formObjct);
+
+            $.post( base_url +'filterTicket', {formObjct}, function(response){
+                // console.log("this is the response", response);
+                $("#Target").html(response);
+            });
+            
         });
     
     });

@@ -390,7 +390,53 @@
 
             $data['crtdTickets'] = $this->Tickets_Model->get_many_by($limit);
             $this->load->view('pages/tickets/posts', $data);
+
+
         }
+
+        public function filter_tickets(){
+            $post = $this->input->post();
+            $params = [];
+
+            if(!empty($post['formObjct']['status'])){
+                $params['f_status'] = $post['formObjct']['status'];
+            }
+
+            if(!empty($post['formObjct']['priority'])){
+                 $params['f_priority'] = $post['formObjct']['priority'];
+            }
+            // ASSIGNED EMPLOYEE
+            // if(!empty($post['formObjct'][''])){
+            //     $params['f_priority'] = $post['formObjct']['priority'];
+            //     
+           $data = $this->createPagination($params);
+           $this->load->view('pages/tickets/posts', $data);
+        }
+
+             
+
+        private function createPagination($params){
+
+            $this->load->library('pagination');
+            $this->Tickets_Model->filter_params($params);
+             $params = $this->Tickets_Model->filter_params($params); 
+            $config['base_url'] = base_url() .'Pages' . '/' . 'index';
+            $config['total_rows'] = $this->Tickets_Model->get_many_by( 0, 0, true);
+            $config['per_page'] = 10;
+            $config['uri_segment'] = 3;   // this checks the uri for the number it holds 
+            $offset = $this->uri->segment(3);
+            $this->pagination->initialize($config);  
+            $data['crtdTickets'] = $this->Tickets_Model->get_many_by($config['per_page'], $offset);
+            $data['links'] = $this->pagination->create_links();
+
+            return $data;
+            
+        }
+
+        
+            
+
+        
 
         
         

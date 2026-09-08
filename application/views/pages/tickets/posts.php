@@ -5,7 +5,6 @@
         <!-- Table Header -->
         <thead class="sticky top-0 bg-gray-200 text-xs uppercase tracking-wider text-gray-600">
             <tr>
-                <th class="px-5 py-4">#</th>
                 <th class="px-5 py-4">Ticket Code</th>
                 <th class="px-5 py-4">Title</th>
                 <th class="px-5 py-4">Author</th>
@@ -25,9 +24,6 @@
             <?php foreach($crtdTickets as $tickets): ?>
                 <?php $count++ ?>
                 <tr class="hover:bg-gray-50 transition-colors duration-200">
-                    <td class="px-5 py-4 font-medium">
-                        <?= $count?>
-                    </td>
 
                     <td class="px-5 py-4 font-semibold text-blue-600">
                         <?= $tickets['ticket_code'] ?>
@@ -79,7 +75,18 @@
             <?php endforeach; ?>
 
         </tbody>
+            
+        <tfoot class ="border border-black ">
+            <tr class="flex flex-row-reverse">
+                <td class="flex flex-row-reverse">
+                    <div class="pagination p-3 ">
+                        <?php echo $links; ?>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
 
     </table>
+   
 
 </div>
