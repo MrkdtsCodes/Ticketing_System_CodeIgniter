@@ -73,7 +73,7 @@ class Tickets_Model extends CI_Model
         $this->db->group_by('tickets.id');
     }
 
-    public function get_many_by($limit = 0, $offset = 0, $count = false, $order_by='', $sort_by='Desc')
+    public function get_many_by($limit = 0, $offset = 0, $count = false, $order_by='', $sort_by='Desc', $params = [])
     {
         // echo "limit is: ". $limit;
         //  echo '<br>';
@@ -81,15 +81,23 @@ class Tickets_Model extends CI_Model
         // echo "offset is: ".$offset;
         $this->_baseTicketQuery();
 
+         if (!empty($params['f_status'])) {
+        $this->db->where('tickets.status', $params['f_status']);
+        }
+
+        if (!empty($params['f_priority'])) {
+            $this->db->where('tickets.priority', $params['f_priority']);
+        }
+
         if($count){
            return $this->db->count_all_results();
         }
 
-        // if($limit != 0){
-        //     $this->db->limit($limit);
-        // };
+        if($limit != 0){
+           $this->db->limit($limit, $offset);
+        };
 
-        $this->db->limit($limit, $offset);
+        
 
         return $this->db->get()->result_array();
         
@@ -99,11 +107,11 @@ class Tickets_Model extends CI_Model
     public function filter_params($params = []){
 
         if(isset($params['f_status']) && isset($params['f_status'])){
-            $this->db->where('tickets.status', $params['f_status']);
+            $params['where'] = $this->db->where('tickets.status', $params['f_status']);
         }
 
         if(isset($params['f_priority']) && isset($params['f_priority'])){
-            $this->db->where('tickets.priority', $params['f_priority']);
+            $params['where'] = $this->db->where('tickets.priority', $params['f_priority']);
         }
     }
 
