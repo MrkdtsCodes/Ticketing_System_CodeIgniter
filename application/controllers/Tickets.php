@@ -405,41 +405,26 @@
             if(!empty($post['formObjct']['priority'])){
                 $params['f_priority'] = $post['formObjct']['priority'];
             }
-            // ASSIGNED EMPLOYEE
-            // if(!empty($post['formObjct'][''])){
-            //     $params['f_priority'] = $post['formObjct']['priority'];
-            // 
 
             $data = $this->createPagination($params);
             
-                        $this->load->view('pages/tickets/posts', $data);
+            $this->load->view('pages/tickets/posts', $data);
         }
-
-             
-
+        
         private function createPagination($params = []){
-
             $this->load->library('pagination');
-            $config['base_url'] = base_url() .'Pages' . '/' . 'index';
+            $config['base_url'] = base_url() .'Pages' . '/' . 'dipslay_all_tickets';
             $config['total_rows'] = $this->Tickets_Model->get_many_by( 0, 0, true, '', 'Desc', $params);
             $config['per_page'] = 10;
             $config['uri_segment'] = 3;   // this checks the uri for the number it holds 
             
             $offset = $this->uri->segment(3);
-            $this->pagination->initialize($config);  
+            $this->pagination->initialize($config); 
+            
             $data['crtdTickets'] = $this->Tickets_Model->get_many_by($config['per_page'], $offset, false, "", 'Desc', $params);
+            $data['total_rows'] = $config['total_rows'];
             $data['links'] = $this->pagination->create_links();
 
             return $data;
-            
         }
-
-        
-            
-
-        
-
-        
-        
-        
     }  

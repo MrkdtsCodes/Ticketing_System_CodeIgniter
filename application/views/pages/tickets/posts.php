@@ -79,9 +79,16 @@
         <tfoot class ="border border-black ">
             <tr class="flex flex-row-reverse">
                 <td class="flex flex-row-reverse">
-                    <div class="pagination p-3 ">
-                        <?php echo $links; ?>
-                    </div>
+                    <?php if(!empty($links)):?>
+                        <div class="">Showing: <?php echo $total_rows; ?> tickets</div>
+                        <div class="pagination p-3 ">
+                            <?php echo $links; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="">
+                            <span>No links genarted</span>
+                        </div>
+                    <?php endif; ?>
                 </td>
             </tr>
         </tfoot>

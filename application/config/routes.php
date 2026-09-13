@@ -80,6 +80,10 @@ $route['example_to_controller'] = 'Tickets/controller_for_batch_update';
 
 //display means show the UI
 
-$route['newTixs'] = 'Pages/index';
+$route['newTixs'] = 'Pages/dipslay_all_tickets';
 $route['filterTicket'] = 'Tickets/filter_tickets';
 // $route['filterTicket/(:num)'] = 'Tickets/applyTicketFilters/$1';
+
+
+//create tickets
+$route['create/tickets'] = 'Pages/create_ticket';

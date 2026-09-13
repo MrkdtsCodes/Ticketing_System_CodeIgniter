@@ -97,11 +97,8 @@ class Tickets_Model extends CI_Model
            $this->db->limit($limit, $offset);
         };
 
-        
-
         return $this->db->get()->result_array();
-        
-        
+    
     }
 
     public function filter_params($params = []){
@@ -113,6 +110,8 @@ class Tickets_Model extends CI_Model
         if(isset($params['f_priority']) && isset($params['f_priority'])){
             $params['where'] = $this->db->where('tickets.priority', $params['f_priority']);
         }
+
+        return $params = [];
     }
 
 

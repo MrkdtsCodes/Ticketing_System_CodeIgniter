@@ -114,8 +114,12 @@ class Pages extends CI_Controller
     //department dropdown values
     public function dsplyDept()
     {
-        $data['departments'] = $this->Tickets_Model->getDprtmnts();
-        $this->load->view('pages/create_tickets', $data);
+        $departments = [];
+        
+        $departments = $this->Tickets_Model->getDprtmnts();
+
+        $depts = json_encode($departments);
+        echo $depts;
     }
 
     public function displayFormPage(){
@@ -176,10 +180,14 @@ class Pages extends CI_Controller
         return("Success");
     }
 
-    public function index()
+    public function dipslay_all_tickets()
     {
         $data = $this->createPagination();
         $this->load->view('pages/tickets/index', $data);
+    }
+
+    public function create_ticket(){
+         $this->load->view('pages/crt_ticket/post');
     }
 
     private function createPagination(){
@@ -192,6 +200,7 @@ class Pages extends CI_Controller
         $offset = $this->uri->segment(3);
         $this->pagination->initialize($config);  
         $data['crtdTickets'] = $this->Tickets_Model->get_many_by($config['per_page'], $offset);
+        $data['total_rows'] = $config['total_rows'];
         $data['links'] = $this->pagination->create_links();
 
         return $data;
