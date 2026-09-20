@@ -35,23 +35,24 @@ $(function() {
         const subject_feild = $("[name='subject']").val().trim();
         const description_feild = $("[name='description']").val().trim();
 
-        if(subject_feild === "" && description_feild === ""){
-            $('#error_subject').html("Subject is Required").addClass("text-red-500");
-            $('#error_description').html("Description is Required").addClass("text-red-500");
-            return
+        let isValid = true;              // start by assuming everything is fine
+
+        if (subject === "") {
+            $('#error_subject').text("Subject is required");
+            isValid = false;             // problem found, remember it
         }
 
-        if(subject_feild === ""){
-            $('#error_subject').html("Subject is Required").addClass("text-red-500");
-            $('#error_description').html("Description is Required").addClass("text-red-500");
-            return
+        if (description === "") {
+            $('#error_description').text("Description is required");
+            isValid = false;
         }
 
-        if(description_feild === ""){
-            $('#error_description').html("Description is Required").addClass("text-red-500");
-            return
+        if (!dept) {
+            $('#error_department').text("Please select a department");
+            isValid = false;
         }
-        
+
+        if (!isValid) return;      
 
         fetch(
         base_url + 'ticket/creation',
