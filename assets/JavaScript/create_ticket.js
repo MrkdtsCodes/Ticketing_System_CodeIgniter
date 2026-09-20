@@ -11,7 +11,8 @@ $(function() {
         success: function(response){
             console.log(response);
 
-            let optionsHtml = '';
+            let optionsHtml = '<option value="" disabled selected>Select Department</option>';
+
             $('#department_dropdown')
                 .html(`<option disabled selected>Select Department</option`);
 
@@ -30,6 +31,27 @@ $(function() {
 
         const form = $('#create_ticket_form')[0];
         const formdata = new FormData(form);
+
+        const subject_feild = $("[name='subject']").val().trim();
+        const description_feild = $("[name='description']").val().trim();
+
+        if(subject_feild === "" && description_feild === ""){
+            $('#error_subject').html("Subject is Required").addClass("text-red-500");
+            $('#error_description').html("Description is Required").addClass("text-red-500");
+            return
+        }
+
+        if(subject_feild === ""){
+            $('#error_subject').html("Subject is Required").addClass("text-red-500");
+            $('#error_description').html("Description is Required").addClass("text-red-500");
+            return
+        }
+
+        if(description_feild === ""){
+            $('#error_description').html("Description is Required").addClass("text-red-500");
+            return
+        }
+        
 
         fetch(
         base_url + 'ticket/creation',

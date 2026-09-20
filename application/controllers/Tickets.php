@@ -419,8 +419,7 @@
             $post = $this->input->post();
 
             $result = $this->Tickets_Model->create_new_ticket($post);
-            var_dump($result);
-            exit();
+
 
             if ($result['status'] === TRUE) {
                 echo $result['message'];
