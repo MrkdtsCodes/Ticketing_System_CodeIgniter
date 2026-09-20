@@ -410,6 +410,20 @@
             
             $this->load->view('pages/tickets/posts', $data);
         }
+
+        public function ticket_creation(){
+            
+            if($_SERVER['REQUEST_METHOD']!== 'POST') {
+                return 'This only accepts post request';
+            }
+            $post = $this->input->post();
+
+            if(!empty($post)){
+                echo "data get";
+            }else{
+                echo "data did not get";
+            }
+        }
         
         private function createPagination($params = []){
             $this->load->library('pagination');

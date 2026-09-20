@@ -84,6 +84,6 @@ $route['newTixs'] = 'Pages/dipslay_all_tickets';
 $route['filterTicket'] = 'Tickets/filter_tickets';
 // $route['filterTicket/(:num)'] = 'Tickets/applyTicketFilters/$1';
 
-
 //create tickets
 $route['create/tickets'] = 'Pages/create_ticket';
+$route['ticket/creation'] = 'Tickets/ticket_creation';
