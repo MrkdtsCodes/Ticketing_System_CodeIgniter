@@ -16,7 +16,7 @@ $(function() {
                 .html(`<option disabled selected>Select Department</option`);
 
             response.forEach(dept => {
-                optionsHtml += `<option id="${dept.id}" value="${dept.dept_name}">${dept.dept_name}</option>`
+                optionsHtml += `<option id="${dept.id}" value="${dept.id}">${dept.dept_name}</option>`
             }); 
             
             $('#department_dropdown').html(optionsHtml);

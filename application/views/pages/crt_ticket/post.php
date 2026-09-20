@@ -37,7 +37,7 @@
 
             <div class="">
                 <label for="department">Department</label>
-                <select name="" id="department_dropdown" name="departments"></select>
+                <select id="department_dropdown" name="department"></select>
             </div>
         </div>
 

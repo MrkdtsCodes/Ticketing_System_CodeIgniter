@@ -46,7 +46,14 @@ class Tickets_Model extends CI_Model
             tickets.title,
             tickets.body,
             tickets.priority,
-            tickets.status,
+            CASE
+                WHEN tickets.status = 'for_approval' THEN 'For Approval'
+                WHEN tickets.status = 'assigned' THEN 'Assigned'
+                WHEN tickets.status = 'on_going' THEN 'On Going'
+                WHEN tickets.status = 'for_testing' THEN 'For Testing'
+                WHEN tickets.status = 'rejected' THEN 'Rejected'
+                WHEN tickets.status = 'closed' THEN 'Closed'
+            END as status,
             tickets.created_at,
             tickets.updated_at,
             department.dept_name,
@@ -124,6 +131,44 @@ class Tickets_Model extends CI_Model
 
 
     // ─── CREATE TICKET ───────────────────────────────────────────────────────────
+
+    public function create_new_ticket($post){
+
+        $post = $post;
+
+        if(empty($post)){
+            return "No data received";
+        }
+        $author_id = $this->session->userdata('user_id');
+
+        $data = [
+            'author_id'     => 1,
+            'department_id' => $post['subject'],
+            'title'         => $post['description'],
+            'body'          => $post['description'],
+            'department_id' => $post['department'],
+            'status'        => 'for_approval',
+        ];
+
+        $result =[];
+        $result = $this->db->insert('tickets', $data);
+        $ticket_id = $this->db->insert_id(); //get the id since auto increment to
+        
+        $ticket_code = 'TCK-' . str_pad($ticket_id, 5, '0', STR_PAD_LEFT);
+        if($result){
+            return[
+                'status' => TRUE,
+                'message' => 'Ticket created! Code: ' . $ticket_code 
+            ];
+        }else{
+            return[
+                'status' => FALSE,
+                'message' => "We couldn't create your ticket. Please review your details and try again."
+            ];
+        }
+        
+        
+    }
 
     public function insrtCrtdTicket($filename){
         $author_id = $this->session->userdata('user_id');

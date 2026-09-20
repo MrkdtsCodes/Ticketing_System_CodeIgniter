@@ -413,15 +413,19 @@
 
         public function ticket_creation(){
             
-            if($_SERVER['REQUEST_METHOD']!== 'POST') {
+            if($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 return 'This only accepts post request';
             }
             $post = $this->input->post();
 
-            if(!empty($post)){
-                echo "data get";
-            }else{
-                echo "data did not get";
+            $result = $this->Tickets_Model->create_new_ticket($post);
+            var_dump($result);
+            exit();
+
+            if ($result['status'] === TRUE) {
+                echo $result['message'];
+            } else {
+                echo $result['message'];
             }
         }
         

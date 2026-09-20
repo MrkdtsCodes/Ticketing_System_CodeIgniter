@@ -175,8 +175,6 @@ class Pages extends CI_Controller
         $input = json_decode(file_get_contents("php://input"), true);
         $name = $this->input->post('input[firstname]');
         echo $input;
- 
-
         return("Success");
     }
 
