@@ -87,3 +87,6 @@ $route['filterTicket'] = 'Tickets/filter_tickets';
 //create tickets
 $route['create/tickets'] = 'Pages/create_ticket';
 $route['ticket/creation'] = 'Tickets/ticket_creation';
+
+//ticket/action/id
+$route['ticket/(:any)/(:any)'] = 'Tickets/$1/$2';

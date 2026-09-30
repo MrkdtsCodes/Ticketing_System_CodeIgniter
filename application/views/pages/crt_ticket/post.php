@@ -112,7 +112,7 @@
                                 <select name="department" id="department_dropdown"
                                     class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 appearance-none text-gray-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors cursor-pointer">
                                 </select>
-                                <small class="text-red-500" id="error_description"></small>
+                                <small id="error_depertment"></small>
                             </div>
                         </div>
 
@@ -166,7 +166,6 @@
                 </div>
             </div>
         </form>
-
     </main>
 </body>
 

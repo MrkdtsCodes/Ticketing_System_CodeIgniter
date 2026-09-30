@@ -185,7 +185,7 @@ class Pages extends CI_Controller
     }
 
     public function create_ticket(){
-         $this->load->view('pages/crt_ticket/post');
+        $this->load->view('pages/crt_ticket/post');
     }
 
     private function createPagination(){

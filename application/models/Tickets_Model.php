@@ -78,6 +78,7 @@ class Tickets_Model extends CI_Model
 
         $this->db->join('department', 'tickets.department_id = department.id', 'left');
         $this->db->group_by('tickets.id');
+        $this->db->order_by('tickets.created_at','DESC');
     }
 
     public function get_many_by($limit = 0, $offset = 0, $count = false, $order_by='', $sort_by='Desc', $params = [])

@@ -34,21 +34,28 @@ $(function() {
 
         const subject_feild = $("[name='subject']").val().trim();
         const description_feild = $("[name='description']").val().trim();
+        const deprt_feild =$('[name="department"]').val();
 
-        let isValid = true;              // start by assuming everything is fine
+        let isValid = true;              
 
-        if (subject === "") {
-            $('#error_subject').text("Subject is required");
-            isValid = false;             // problem found, remember it
+        if (subject_feild === "") {
+            $('#error_subject')
+                .html("Subject is required")
+                .addClass('text-red-500');
+            isValid = false;             
         }
 
-        if (description === "") {
-            $('#error_description').text("Description is required");
+        if (description_feild === "") {
+            $('#error_description')
+                .html("Description is required")
+                .addClass('text-red-500 p-2');
             isValid = false;
         }
 
-        if (!dept) {
-            $('#error_department').text("Please select a department");
+        if (!deprt_feild) {
+            $('#error_depertment')
+                .text("Please select a department")
+                .addClass('text-red-500');;
             isValid = false;
         }
 

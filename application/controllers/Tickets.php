@@ -427,6 +427,11 @@
                 echo $result['message'];
             }
         }
+
+        public function view($id)
+        {
+            $this->load->view('pages/crt_ticket/post');
+        }
         
         private function createPagination($params = []){
             $this->load->library('pagination');
@@ -444,4 +449,6 @@
 
             return $data;
         }
+
+
     }  
