@@ -1,17 +1,4 @@
-<head>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.3.0/dist/flowbite.min.css" rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap"
-        rel="stylesheet" />
-    <style>
-        body {
-            font-family: 'DM Sans', sans-serif;
-        }
-    </style>
-</head>
 
-<body class="bg-gray-50">
     
     <main class="pt-28 pb-12 px-4">
 
@@ -40,7 +27,7 @@
                             </path>
                         </svg>
                     </div>
-                    <h1 class="text-xl font-bold ml-3 text-gray-800">Create Ticket</h1>
+                    <h1 class="text-xl font-bold ml-3 text-gray-800"><?= $ticket_row['ticket_code'] ?? 'Create Ticket'?></h1>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -51,7 +38,7 @@
                             <label class="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">
                                 <span>Subject</span><span class="text-red-500">*</span>
                             </label>
-                            <input type="text" placeholder="Enter ticket subject..." name="subject"
+                            <input type="text" placeholder="Enter ticket subject..." name="subject" value="<?= $ticket_row['title'] ?? '' ?>"
                                 class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
                             <small id="error_subject"></small>
                         </div>
@@ -80,7 +67,7 @@
 
                                 <textarea
                                     class="border border-transparent w-full h-64 p-4 text-sm bg-transparent resize-none outline-none placeholder:text-gray-400"
-                                    placeholder="Please describe your issue in detail..." name="description"></textarea>
+                                    placeholder="Please describe your issue in detail..." name="description"><?= $ticket_row['body'] ?? '' ?></textarea>
                             </div>
                             <small id="error_description"></small>
                         </div>
@@ -109,7 +96,7 @@
                                 <span>Department In-Charge</span><span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <select name="department" id="department_dropdown"
+                                <select name="department" id="department_dropdown" data-selected_id="<?= $ticket_row['department_id'] ?? '' ?>"
                                     class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 appearance-none text-gray-700 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors cursor-pointer">
                                 </select>
                                 <small id="error_depertment"></small>
@@ -167,7 +154,6 @@
             </div>
         </form>
     </main>
-</body>
 
-<script src="../assets/JavaScript/jquery-4.0.0.min.js"></script>
-<script src="../assets/JavaScript/create_ticket.js"></script>
+<script src="<?= base_url('assets/JavaScript/jquery-4.0.0.min.js') ?>"></script>
+<script src="<?= base_url('assets/JavaScript/create_ticket.js') ?>"></script>

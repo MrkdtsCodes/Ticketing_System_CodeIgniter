@@ -46,14 +46,12 @@ class Pages extends CI_Controller
         if (!$this->session->userdata('is_loggedin')) {
             redirect('login');
         }
-
-
         $this->load->view('pages/navbar');
         $this->load->view('pages/Dashboard');
     }
 
         //dashboard
-        public function displayAccounts()
+    public function displayAccounts()
     {
         if (!$this->session->userdata('is_loggedin')) {
             redirect('login');
@@ -155,10 +153,13 @@ class Pages extends CI_Controller
 
     //------------------------------------TABLE PAGES---------------------------------------------------------------------/
 
+    public function displaynavbar(){
+        $this->load->view('pages/index');
+    }
 
 
     public function displayApprvlPgs(){
-         if ($this->session->userdata('is_loggedin')) {  
+        if ($this->session->userdata('is_loggedin')) {  
             $data['crtdTickets'] = $this->Tickets_Model->getForApprovalTickets();
   
             $this->load->view('pages/navbar');
@@ -168,7 +169,6 @@ class Pages extends CI_Controller
             redirect('login');
         }
     }
-
 
 
     public function display_new_createTicket(){
@@ -185,7 +185,7 @@ class Pages extends CI_Controller
     }
 
     public function create_ticket(){
-        $this->load->view('pages/crt_ticket/post');
+        $this->load->view('pages/crt_ticket/index');
     }
 
     private function createPagination(){

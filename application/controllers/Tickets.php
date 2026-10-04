@@ -428,10 +428,51 @@
             }
         }
 
-        public function view($id)
-        {
-            $this->load->view('pages/crt_ticket/post');
+
+        //view from ticket table
+        public function view($ticketId){
+            $data['ticket_row'] = $this->Tickets_Model->get_by($ticketId);
+            $this->load->view('pages/crt_ticket/index', $data);
         }
+        
+        public function approvedTicket(){
+            $post =[];
+
+            if(isset($_POST['ticket_status'])){
+                $post['status'] = $_POST['ticket_status'];
+            }
+
+            if(isset($_POST['ticket_id'])){
+                $post['ticket_id'] = $_POST['ticket_id'];
+            }
+
+            if(isset($_POST['ticket_priority'])){
+                $post['priority'] = $_POST['ticket_priority'];
+            }
+
+            //ipasa sa model
+            $result = $this->Tickets_Model->update_status($post);
+
+            if ($result) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Ticket updated successfully'
+                ]);
+
+            } else {
+
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Ticket update failed'
+                ]);
+            }
+
+            
+        }
+
+
+
+
         
         private function createPagination($params = []){
             $this->load->library('pagination');

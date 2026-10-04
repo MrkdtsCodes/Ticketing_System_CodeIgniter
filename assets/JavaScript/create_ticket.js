@@ -1,6 +1,9 @@
 $(function() {
     const base_url = 'http://localhost/Projects/TICKETING_SYSTEM/';
 
+
+    const selectedDeptId = $('#department_dropdown').data('selected_id');
+
     //getting the department dropdown options
     $.ajax({
         url: base_url + "Pages/dsplyDept",
@@ -17,7 +20,9 @@ $(function() {
                 .html(`<option disabled selected>Select Department</option`);
 
             response.forEach(dept => {
-                optionsHtml += `<option id="${dept.id}" value="${dept.id}">${dept.dept_name}</option>`
+                const isSelected = String(dept.id) === String(selectedDeptId) ? 'selected' : '';
+
+                optionsHtml += `<option value="${dept.id}" ${isSelected}>${dept.dept_name}</option>`;
             }); 
             
             $('#department_dropdown').html(optionsHtml);
@@ -74,6 +79,7 @@ $(function() {
             return response.text()})
         .then(data => {
             console.log(data);
+            alert(data);
         })
         .catch(error => {
             console.error(error);

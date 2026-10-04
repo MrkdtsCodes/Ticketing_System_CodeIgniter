@@ -47,6 +47,7 @@ class Tickets_Model extends CI_Model
             tickets.body,
             tickets.priority,
             CASE
+                WHEN tickets.status = 'approved' THEN 'Approved'
                 WHEN tickets.status = 'for_approval' THEN 'For Approval'
                 WHEN tickets.status = 'assigned' THEN 'Assigned'
                 WHEN tickets.status = 'on_going' THEN 'On Going'
@@ -120,6 +121,19 @@ class Tickets_Model extends CI_Model
         }
 
         return $params = [];
+    }
+
+    public function update_status($post){
+
+        $data = array(
+            'priority'  => $post['priority'],
+            'status' => $post['status'],
+        );
+        
+        $this->db->where('id', $post['ticket_id']);
+        $this->db->update('tickets', $data);
+
+        return $this->db->affected_rows();
     }
 
 
@@ -225,7 +239,7 @@ class Tickets_Model extends CI_Model
 
     // ─── GET SINGLE TICKET (view/edit page) ──────────────────────────────────────
 
-    public function getViewTckts($tcktID)
+    public function get_by($tcktID)
     {
         $this->_baseTicketQuery();
         $this->db->where('tickets.id', $tcktID);
