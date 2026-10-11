@@ -431,8 +431,8 @@
 
         //view from ticket table
         public function view($ticketId){
-            $data['ticket_row'] = $this->Tickets_Model->get_by($ticketId);
-            $this->load->view('pages/crt_ticket/index', $data);
+            $data['ticket_data'] = $this->Tickets_Model->get_by($ticketId);
+            $this->load->view('pages/view_ticket/index', $data);
         }
         
         public function approvedTicket(){
@@ -470,9 +470,9 @@
             
         }
 
-
-
-
+        public function new_view(){
+            $this->load->view('pages/view_ticket/index');
+        }
         
         private function createPagination($params = []){
             $this->load->library('pagination');

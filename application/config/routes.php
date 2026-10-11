@@ -90,5 +90,7 @@ $route['ticket/creation'] = 'Tickets/ticket_creation';
 
 //ticket/action/id
 $route['ticket/(:any)/(:any)'] = 'Tickets/$1/$2';
+$route['view/ticxkss'] = 'Tickets/new_view';
 
+//ticket status
 $route['approved/ticket'] = 'Tickets/approvedTicket';

@@ -43,6 +43,7 @@ class Tickets_Model extends CI_Model
             tickets.id,
             CONCAT('TCK-', LPAD(tickets.id, 5, '0')) AS ticket_code,
             tickets.department_id,
+            department.dept_name as department_name,
             tickets.title,
             tickets.body,
             tickets.priority,
@@ -131,6 +132,7 @@ class Tickets_Model extends CI_Model
         );
         
         $this->db->where('id', $post['ticket_id']);
+        $this->db->where('status', 'For Approval');  // guard
         $this->db->update('tickets', $data);
 
         return $this->db->affected_rows();
