@@ -94,3 +94,5 @@ $route['view/ticxkss'] = 'Tickets/new_view';
 
 //ticket status
 $route['approved/ticket'] = 'Tickets/approvedTicket';
+
+//
