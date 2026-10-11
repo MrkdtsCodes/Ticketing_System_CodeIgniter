@@ -542,4 +542,4 @@
             });
         });
     </script>
-    <script src="<?= base_url('/assets/JavaScript/view_ticket.js')?>"></script>
+    <script src="<?= base_url('/assets/JavaScript/compiled/view_tickets.js')?>"></script>

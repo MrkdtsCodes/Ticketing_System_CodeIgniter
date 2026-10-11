@@ -1,0 +1,24 @@
+{
+  "name": "ticketing_system",
+  "version": "1.0.0",
+  "description": "A personal ticketing system project built with PHP, CodeIgniter, jQuery, MySQL, and Tailwind CSS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrkdtsCodes/Ticketing_System_CodeIgniter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MrkdtsCodes/Ticketing_System_CodeIgniter/issues"
+  },
+  "homepage": "https://github.com/MrkdtsCodes/Ticketing_System_CodeIgniter#readme",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}
