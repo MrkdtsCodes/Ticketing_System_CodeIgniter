@@ -126,16 +126,43 @@ class Tickets_Model extends CI_Model
 
     public function update_status($post){
 
-        $data = array(
-            'priority'  => $post['priority'],
-            'status' => $post['status'],
+        $update_fields = array(
+            'priority' => $post['priority'],
+            'status'   => $post['status'],
         );
-        
-        $this->db->where('id', $post['ticket_id']);
-        $this->db->where('status', 'For Approval');  // guard
-        $this->db->update('tickets', $data);
 
-        return $this->db->affected_rows();
+        $result = [];
+
+        if (empty($post) || empty($post['ticket_id'])) {
+            return [
+                'flag'    => 0,
+                'message' => 'Ticket ID is missing.',
+            ];
+        }
+            /*
+                1 doesn't have id
+                2 updated successfully
+                3 already updated
+            */
+
+            if( ! $post['ticket_id']){
+                return $result = ['flag' => 1, 'message' => 'Ticket ID is missing.'];
+            }
+
+            $this->db->where('id', $post['ticket_id']);
+            $this->db->where('status', 'for_approval');
+            $this->db->update('tickets', $update_fields);
+
+            $rows_changed = $this->db->affected_rows();
+
+            if($rows_changed < 1){
+                return ['flag' => 2, 'message' => 'Ticket ' . $post['ticket_id'] . ' was already updated.'];
+            }
+
+            if($rows_changed >= 1){
+                return ['flag' => 3, 'message' => 'Ticket ' . $post['ticket_id'] . ' was updated successfully.'];
+            }
+
     }
 
 

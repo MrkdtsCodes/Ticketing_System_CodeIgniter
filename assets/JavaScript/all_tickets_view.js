@@ -62,12 +62,11 @@ $(function(){
 
                 console.log("Server response:", response);
 
-
                 // dito pwede mong isara ang modal
                 $('#approveModal').css("display", "none");
 
                 // then reload page
-               window.location.href = base_url + "ticket/view/" + ticketId;
+                window.location.href = base_url + "ticket/view/" + ticketId;
                 
             },
 

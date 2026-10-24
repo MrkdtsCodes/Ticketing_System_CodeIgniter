@@ -431,8 +431,18 @@
 
         //view from ticket table
         public function view($ticketId){
+
+            $api_result = [];
+            //validations
+            if(! $ticketId){
+                return $api_result = [
+                    'message' => "Transaction ID is not Defined"
+                ];
+            }
+
             $data['ticket_data'] = $this->Tickets_Model->get_by($ticketId);
             $this->load->view('pages/view_ticket/index', $data);
+ 
         }
         
         public function approvedTicket(){
@@ -453,13 +463,13 @@
             //ipasa sa model
             $result = $this->Tickets_Model->update_status($post);
 
-            if ($result) {
+            if ($result['flag'] == 3) {
                 echo json_encode([
                     'success' => true,
-                    'message' => 'Ticket updated successfully'
+                    'message' => 'Ticket updated successfully',
                 ]);
 
-            } else {
+            }else{
 
                 echo json_encode([
                     'success' => false,
