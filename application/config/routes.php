@@ -96,3 +96,4 @@ $route['view/ticxkss'] = 'Tickets/new_view';
 $route['approved/ticket'] = 'Tickets/approvedTicket';
 
 //
+$route['assign/employee'] = 'Tickets/assign_emp';

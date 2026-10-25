@@ -501,5 +501,21 @@
             return $data;
         }
 
+        public function assign_emp()
+        {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if(empty($data)){
+                json_encode(
+                    ['success' => false, 'message' => 'No data received']
+                );
+                return;
+            }
+
+            
+            
+
+        }
+
 
     }  

@@ -502,6 +502,7 @@ class Tickets_Model extends CI_Model
         return $this->db->trans_status();
     }
 
+    
 
     // ─── REASSIGN DEPARTMENT ──────────────────────────────────────────────────────
 
@@ -623,7 +624,8 @@ class Tickets_Model extends CI_Model
         return $this->db->get()->result_array();
     }
 
-    public function filterparams(){
-
-    }
+    // public function assign_employee($emp_ids)
+    // {
+        
+    // }
 }
